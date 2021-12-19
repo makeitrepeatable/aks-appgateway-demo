@@ -1,0 +1,102 @@
+trigger:
+- main
+
+resources:
+  repositories:
+    - repository: frontend
+      type: git
+      name: xlabs/xlabs-venue-web
+      ref: refs/heads/master
+
+variables:
+  acrName: makeitrepeatable
+  imageName: xlabs-venue-web
+  dockerRegistryServiceConnection: makeitrepeatable-acr
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - checkout: frontend
+    - script: |
+      mv $(System.DefaultWorkingDirectory)/xlabs-venue-web $(Pipeline.Workspace)/xlabs-venue-web
+    - task: Docker@2
+      displayName: Build an image and push to $(acrName)
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(Pipeline.Workspace)/xlabs-venue-web/Dockerfile'
+        containerRegistry: $(dockerRegistryServiceConnection)
+        repository: $(imageName)
+        tags: |
+          $(Build.BuildId)
+
+# - stage: Deploy
+#   displayName: Deploy
+#   jobs:
+#   - job: Deploy
+#     steps:
+#     - task: DownloadBuildArtifacts@0
+#       inputs:
+#         artifactName: ${{ parameters.terraformArtifactName }}
+#         downloadPath: ${{ parameters.terraformDirectory }}
+#     - task: AzureCLI@1
+#       displayName: 'setup az authentication'
+#       inputs:
+#         azureSubscription: '${{ parameters.serviceConnection }}'
+#         addSpnToEnvironment: true
+#         scriptLocation: inlineScript
+#         failOnStandardError: 'true'
+#         inlineScript: |
+#           echo "##vso[task.setvariable variable=ARM_SUBSCRIPTION_ID]$(az account show --query="id" -o tsv)"
+#           echo "##vso[task.setvariable variable=ARM_CLIENT_ID]${servicePrincipalId}"
+#           echo "##vso[task.setvariable variable=ARM_CLIENT_SECRET]${servicePrincipalKey}"
+#           echo "##vso[task.setvariable variable=ARM_TENANT_ID]${tenantId}"
+
+#     - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+#       displayName: "Use terraform ${{ parameters.terraformVersion }}"
+#       inputs:
+#         terraformVersion: ${{ parameters.terraformVersion }}
+
+#     - ${{ if ne(variables['Build.DefinitionName'], 'azure-b2c') }}:
+#       - template: ../steps/terraform-init.yml
+#         parameters:
+#           serviceConnection: ${{ parameters.serviceConnection }}
+#           stateResourceGroup: ${{ parameters.stateResourceGroup }}
+#           stateStorageAccount: ${{ parameters.stateStorageAccount }}
+#           stateStorageContainer: ${{ parameters.stateStorageContainer }}
+#           stateFileName: ${{ parameters.stateFileName }}
+#           terraformDirectory: ${{ parameters.terraformDirectory }}
+#           terraformVersion: ${{ parameters.terraformVersion }}
+#     - task: AzureCLI@1
+#       inputs:
+#         azureSubscription: '${{ parameters.serviceConnection }}'
+#         scriptLocation: inlineScript
+#         failOnStandardError: 'true'
+#         workingDirectory: ${{ parameters.terraformDirectory }}/${{ parameters.terraformArtifactName }}
+#         inlineScript: |
+#           ls
+#           chmod -R 700 .terraform/
+#           terraform apply plan.out
+#       displayName: 'terraform apply'
+#       env:
+#         ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+#         ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+#         ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+#         ARM_TENANT_ID: $(ARM_TENANT_ID)
+      # - task: AzureCLI@1
+      #   displayName: 'set kubectl context'
+      #   inputs:
+      #     azureSubscription: ${{ parameters.azureSubscription }}
+      #     scriptLocation: inlineScript
+      #     inlineScript: |
+      #       az aks get-credentials -n ${{ parameters.aksName }} -g ${{ parameters.aksRgName }} --admin
+      #       kubectl config use-context  ${{ parameters.aksName }}-admin
+
+      #kubectl create ns
+      #kubectl create -f aks-config/deployment.yaml
+      #az aks update -n myAKSCluster -g myResourceGroup --attach-acr $MYACR
+

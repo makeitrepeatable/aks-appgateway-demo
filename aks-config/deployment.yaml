@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xlabs-venue-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xlabs-venue-web
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5 
+  template:
+    metadata:
+      labels:
+        app: xlabs-venue-web
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": linux
+      containers:
+      - name: xlabs-venue-web
+        image: makeitrepeatable.azurecr.io/xlabs-venue-web:341
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 250m
+          limits:
+            cpu: 500m
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: xlabs-venue-web
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: xlabs-venue-web
