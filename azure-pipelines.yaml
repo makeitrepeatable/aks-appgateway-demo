@@ -23,7 +23,7 @@ stages:
     steps:
     - checkout: frontend
     - script: |
-      mv $(System.DefaultWorkingDirectory)/xlabs-venue-web $(Pipeline.Workspace)/xlabs-venue-web
+        mv $(System.DefaultWorkingDirectory)/xlabs-venue-web $(Pipeline.Workspace)/xlabs-venue-web
     - task: Docker@2
       displayName: Build an image and push to $(acrName)
       inputs:
