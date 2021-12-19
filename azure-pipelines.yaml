@@ -59,6 +59,10 @@ stages:
           repository: ${{ app.name }}
           tags: |
             $(Build.BuildId)
+      - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
+        displayName: 'use terraform 1.1'
+        inputs:
+          terraformVersion: 1.1      
 
 # - stage: Deploy
 #   displayName: Deploy
