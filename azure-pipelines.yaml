@@ -42,7 +42,7 @@ stages:
         sudo apt-get install -y apt-transport-https && \
         sudo apt-get update && \
         sudo apt-get install -y dotnet-sdk-6.0
-        dotnet help build
+        dotnet --help
       displayName: Install .NET SDK
 #    - bash: |
 #        cd xlabs-venue-api
