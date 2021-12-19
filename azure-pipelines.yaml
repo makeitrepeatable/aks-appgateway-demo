@@ -7,7 +7,17 @@ resources:
       type: git
       name: xlabs/xlabs-venue-web
       ref: refs/heads/main
+    - repository: backend
+      type: git
+      name: xlabs/xlabs-venue-api
+      ref: refs/heads/main
 
+parameters:
+- name: images
+  type: object
+  default:
+  - name: frontend
+  - name: backend
 variables:
   acrName: makeitrepeatable
   imageName: xlabs-venue-web
@@ -23,17 +33,39 @@ stages:
     steps:
     - checkout: self
     - checkout: frontend
-    # - script: |
-    #     mv $(System.DefaultWorkingDirectory)/xlabs-venue-web $(Pipeline.Workspace)/xlabs-venue-web
+    - checkout: backend
+    - bash: |
+      wget https://packages.microsoft.com/config/ubuntu/21.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+      sudo dpkg -i packages-microsoft-prod.deb
+      rm packages-microsoft-prod.deb
+      sudo apt-get update; \
+      sudo apt-get install -y apt-transport-https && \
+      sudo apt-get update && \
+      sudo apt-get install -y dotnet-sdk-6.0
+    displayName: Install .NET SDK
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+      workingDirectory: '$(System.DefaultWorkingDirectory)/xlabs-venue-api/'
     - task: Docker@2
-      displayName: Build an image and push to $(acrName)
+      displayName: Build frontend an image and push to $(acrName)
       inputs:
         command: buildAndPush
         dockerfile: '$(System.DefaultWorkingDirectory)/xlabs-venue-web/Dockerfile'
         containerRegistry: $(dockerRegistryServiceConnection)
-        repository: $(imageName)
+        repository: xlabs-venue-web
         tags: |
           $(Build.BuildId)
+    - task: Docker@2
+      displayName: Build backend an image and push to $(acrName)
+      inputs:
+        command: buildAndPush
+        dockerfile: '$(System.DefaultWorkingDirectory)/xlabs-venue-api/Dockerfile'
+        containerRegistry: $(dockerRegistryServiceConnection)
+        repository: xlabs-venue-api
+        tags: |
+          $(Build.BuildId)
+
 
 # - stage: Deploy
 #   displayName: Deploy
