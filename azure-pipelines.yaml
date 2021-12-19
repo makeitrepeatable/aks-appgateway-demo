@@ -21,6 +21,7 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
+    - checkout: self
     - checkout: frontend
     # - script: |
     #     mv $(System.DefaultWorkingDirectory)/xlabs-venue-web $(Pipeline.Workspace)/xlabs-venue-web
