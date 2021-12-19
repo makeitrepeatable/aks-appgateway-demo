@@ -130,7 +130,7 @@ stages:
           inlineScript: |
             terraform init -input=false -backend-config=storage_account_name=${{ parameters.stateStorageAccount }} \
               -backend-config=resource_group_name=${{ parameters.stateResourceGroup }} \
-              -backend-config=container_name=${{ parameters.stateStorageContainer }} ${{ parameters.stateFileName }}
+              -backend-config=container_name=${{ parameters.stateStorageContainer }}
         env:
           ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
           ARM_CLIENT_ID: $(ARM_CLIENT_ID)
