@@ -46,7 +46,7 @@ stages:
     - task: DotNetCoreCLI@2
       inputs:
         command: 'build'
-      workingDirectory: '$(System.DefaultWorkingDirectory)/xlabs-venue-api/'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/xlabs-venue-api/'
     - task: Docker@2
       displayName: Build frontend an image and push to $(acrName)
       inputs:
