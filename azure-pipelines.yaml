@@ -42,16 +42,11 @@ stages:
         sudo apt-get install -y apt-transport-https && \
         sudo apt-get update && \
         sudo apt-get install -y dotnet-sdk-3.1
-        cd xlabs-venue-api
-        dotnet build 
       displayName: Install .NET SDK
-#    - bash: |
-#        cd xlabs-venue-api
-#        dotnet help
-    # - task: DotNetCoreCLI@2
-    #   inputs:
-    #     command: 'build'
-    #     workingDirectory: xlabs-venue-api
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
+        workingDirectory: xlabs-venue-api
     - task: Docker@2
       displayName: Build frontend an image and push to $(acrName)
       inputs:
