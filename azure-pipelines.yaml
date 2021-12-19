@@ -153,59 +153,22 @@ stages:
           ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
           ARM_TENANT_ID: $(ARM_TENANT_ID)
 
-# - stage: Deploy
-#   displayName: Deploy
-#   jobs:
-#   - job: Deploy
-#     steps:
-#     - task: DownloadBuildArtifacts@0
-#       inputs:
-#         artifactName: ${{ parameters.terraformArtifactName }}
-#         downloadPath: ${{ parameters.terraformDirectory }}
-#     - task: AzureCLI@1
-#       displayName: 'setup az authentication'
-#       inputs:
-#         azureSubscription: '${{ parameters.serviceConnection }}'
-#         addSpnToEnvironment: true
-#         scriptLocation: inlineScript
-#         failOnStandardError: 'true'
-#         inlineScript: |
-#           echo "##vso[task.setvariable variable=ARM_SUBSCRIPTION_ID]$(az account show --query="id" -o tsv)"
-#           echo "##vso[task.setvariable variable=ARM_CLIENT_ID]${servicePrincipalId}"
-#           echo "##vso[task.setvariable variable=ARM_CLIENT_SECRET]${servicePrincipalKey}"
-#           echo "##vso[task.setvariable variable=ARM_TENANT_ID]${tenantId}"
-
-#     - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
-#       displayName: "Use terraform ${{ parameters.terraformVersion }}"
-#       inputs:
-#         terraformVersion: ${{ parameters.terraformVersion }}
-
-#     - ${{ if ne(variables['Build.DefinitionName'], 'azure-b2c') }}:
-#       - template: ../steps/terraform-init.yml
-#         parameters:
-#           serviceConnection: ${{ parameters.serviceConnection }}
-#           stateResourceGroup: ${{ parameters.stateResourceGroup }}
-#           stateStorageAccount: ${{ parameters.stateStorageAccount }}
-#           stateStorageContainer: ${{ parameters.stateStorageContainer }}
-#           stateFileName: ${{ parameters.stateFileName }}
-#           terraformDirectory: ${{ parameters.terraformDirectory }}
-#           terraformVersion: ${{ parameters.terraformVersion }}
-#     - task: AzureCLI@1
-#       inputs:
-#         azureSubscription: '${{ parameters.serviceConnection }}'
-#         scriptLocation: inlineScript
-#         failOnStandardError: 'true'
-#         workingDirectory: ${{ parameters.terraformDirectory }}/${{ parameters.terraformArtifactName }}
-#         inlineScript: |
-#           ls
-#           chmod -R 700 .terraform/
-#           terraform apply plan.out
-#       displayName: 'terraform apply'
-#       env:
-#         ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
-#         ARM_CLIENT_ID: $(ARM_CLIENT_ID)
-#         ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
-#         ARM_TENANT_ID: $(ARM_TENANT_ID)
+      - task: AzureCLI@1
+        inputs:
+          azureSubscription: '${{ parameters.serviceConnection }}'
+          scriptLocation: inlineScript
+          failOnStandardError: 'true'
+          workingDirectory: ${{ parameters.terraformDirectory }}/${{ parameters.terraformArtifactName }}
+          inlineScript: |
+            ls
+            chmod -R 700 .terraform/
+            terraform apply plan.out
+        displayName: 'terraform apply'
+        env:
+          ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+          ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+          ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+          ARM_TENANT_ID: $(ARM_TENANT_ID)
       # - task: AzureCLI@1
       #   displayName: 'set kubectl context'
       #   inputs:
