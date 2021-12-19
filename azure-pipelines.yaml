@@ -62,8 +62,12 @@ stages:
           repository: ${{ app.name }}
           tags: |
             $(Build.BuildId)
+- stage: Build
+  displayName: Build
+  jobs:
   - job: Deploy_Infra
     displayName: Deploy Infra
+    dependsOn: Build
     pool:
       vmImage: ubuntu-latest
     steps:            
