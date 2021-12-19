@@ -64,10 +64,10 @@ stages:
             $(Build.BuildId)
 - stage: Deploy_Infra
   displayName: Deploy Infra
+  dependsOn: Build
   jobs:
   - job: Terraform_Plan
     displayName: Terraform plan
-    dependsOn: Build
     pool:
       vmImage: ubuntu-latest
     steps:            
