@@ -43,6 +43,7 @@ stages:
         sudo apt-get update && \
         sudo apt-get install -y dotnet-sdk-6.0
       displayName: Install .NET SDK
+    - bash: ls
     - task: DotNetCoreCLI@2
       inputs:
         command: 'build'
