@@ -87,7 +87,6 @@ stages:
       vmImage: ubuntu-latest
     steps:     
       - checkout: self  
-      - bash: ls     
       - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
         displayName: 'Use terraform 1.1.0'
         inputs:
@@ -128,7 +127,6 @@ stages:
           failOnStandardError: true
           scriptLocation: inlineScript
           scriptType: bash
-          workingDirectory: xlabs-platform
           inlineScript: |
             terraform init -input=false -backend-config=storage_account_name=${{ parameters.stateStorageAccount }} \
               -backend-config=resource_group_name=${{ parameters.stateResourceGroup }} \
