@@ -62,11 +62,11 @@ stages:
           repository: ${{ app.name }}
           tags: |
             $(Build.BuildId)
-- stage: Build
-  displayName: Build
+- stage: Deploy_Infra
+  displayName: Deploy Infra
   jobs:
-  - job: Deploy_Infra
-    displayName: Deploy Infra
+  - job: Terraform_Plan
+    displayName: Terraform plan
     dependsOn: Build
     pool:
       vmImage: ubuntu-latest
