@@ -16,6 +16,19 @@ parameters:
 - name: serviceConnection
   type: string
   default: makeitrepeatable
+- name: stateStorageAccount
+  type: string
+  default: makeitrepeatabletfstates
+- name: stateResourceGroup
+  type: string
+  default: makeitrepeatable-storage
+- name: stateStorageContainer
+  type: string
+  default: tf-states
+- name: stateFileName
+  type: string
+  default: xlabs.tfstate        
+
 - name: apps
   type: object
   default:
@@ -104,6 +117,23 @@ stages:
             echo "##vso[task.setvariable variable=ARM_CLIENT_ID]${servicePrincipalId}"
             echo "##vso[task.setvariable variable=ARM_CLIENT_SECRET]${servicePrincipalKey}"
             echo "##vso[task.setvariable variable=ARM_TENANT_ID]$(az account show --query="tenantId" -o tsv)"
+      - task: AzureCLI@2
+        displayName: "Terraform init"
+        inputs:
+          azureSubscription: ${{ parameters.serviceConnection }}
+          failOnStandardError: true
+          scriptLocation: inlineScript
+          scriptType: bash
+          workingDirectory: xlabs-platform
+          inlineScript: |
+            terraform init -input=false -backend-config=storage_account_name=${{ parameters.stateStorageAccount }} \
+              -backend-config=resource_group_name=${{ parameters.stateResourceGroup }} \
+              -backend-config=container_name=${{ parameters.stateStorageContainer }} ${{ parameters.stateFileName }}
+        env:
+          ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
+          ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+          ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
+          ARM_TENANT_ID: $(ARM_TENANT_ID)      
 
 # - stage: Deploy
 #   displayName: Deploy

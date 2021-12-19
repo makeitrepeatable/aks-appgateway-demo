@@ -1,3 +1,8 @@
+terraform {
+  backend "azurerm" {
+    key = "terraform.tfstate"
+  }
+}
 resource "azurerm_resource_group" "example" {
   name     = "example-resources"
   location = "uksouth"
