@@ -27,7 +27,9 @@ parameters:
   default: tf-states
 - name: stateFileName
   type: string
-  default: xlabs.tfstate        
+  default: xlabs.tfstate  
+- name: system.debug
+  default: true      
 
 - name: apps
   type: object
