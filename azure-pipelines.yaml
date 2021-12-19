@@ -63,9 +63,9 @@ stages:
           tags: |
             $(Build.BuildId)
       - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
-        displayName: 'Use terraform 1.1'
+        displayName: 'Use terraform 1.1.0'
         inputs:
-          terraformVersion: 1.1      
+          terraformVersion: 1.1.0      
       - task: AzureKeyVault@1
         displayName: 'Azure Key Vault: makeitrepeatablekv'
         inputs:
