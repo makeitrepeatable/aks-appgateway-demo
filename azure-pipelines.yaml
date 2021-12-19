@@ -22,13 +22,13 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - checkout: frontend
-    - script: |
-        mv $(System.DefaultWorkingDirectory)/xlabs-venue-web $(Pipeline.Workspace)/xlabs-venue-web
+    # - script: |
+    #     mv $(System.DefaultWorkingDirectory)/xlabs-venue-web $(Pipeline.Workspace)/xlabs-venue-web
     - task: Docker@2
       displayName: Build an image and push to $(acrName)
       inputs:
         command: buildAndPush
-        dockerfile: '$(Pipeline.Workspace)/xlabs-venue-web/Dockerfile'
+        dockerfile: '$(System.DefaultWorkingDirectory)/xlabs-venue-web/Dockerfile'
         containerRegistry: $(dockerRegistryServiceConnection)
         repository: $(imageName)
         tags: |
