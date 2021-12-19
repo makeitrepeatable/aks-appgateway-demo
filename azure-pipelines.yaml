@@ -62,6 +62,11 @@ stages:
           repository: ${{ app.name }}
           tags: |
             $(Build.BuildId)
+  - job: Deploy_Infra
+    displayName: Deploy Infra
+    pool:
+      vmImage: ubuntu-latest
+    steps:            
       - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
         displayName: 'Use terraform 1.1.0'
         inputs:
