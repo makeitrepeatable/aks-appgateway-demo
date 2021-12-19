@@ -1,6 +1,6 @@
 terraform {
   backend "azurerm" {
-    key = "terraform.tfstate"
+    key = "xlabs.tfstate"
   }
 }
 resource "azurerm_resource_group" "example" {
