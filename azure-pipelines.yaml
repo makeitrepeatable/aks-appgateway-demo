@@ -13,6 +13,8 @@ resources:
       ref: refs/heads/main
 
 parameters:
+- name: serviceConnection
+  value: makeitrepeatable
 - name: apps
   type: object
   default:
@@ -60,9 +62,38 @@ stages:
           tags: |
             $(Build.BuildId)
       - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
-        displayName: 'use terraform 1.1'
+        displayName: 'Use terraform 1.1'
         inputs:
           terraformVersion: 1.1      
+      - task: AzureKeyVault@1
+        displayName: 'Azure Key Vault: makeitrepeatablekv'
+        inputs:
+          azuresubscription: ${{ parameters.serviceConnection }}
+          KeyVaultName: makeitrepeatablekv
+          SecretsFilter: '*'
+
+
+  # - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+  #   displayName: 'replace tokens in terraform dir'
+  #   inputs:
+  #     targetFiles: |
+  #       ${{ parameters.terraformDir }}/**/*.yml
+  #       ${{ parameters.terraformDir }}/**/*.xml
+  #       ${{ parameters.terraformDir }}/**/*.tfvars
+  #     verbosity: on
+
+  - task: AzureCLI@1
+    displayName: 'setup az authentication: ${{ parameters.serviceConnection }}'
+    inputs:
+      azureSubscription: '${{ parameters.serviceConnection }}'
+      addSpnToEnvironment: true
+      scriptLocation: inlineScript
+      failOnStandardError: 'true'
+      inlineScript: |
+        echo "##vso[task.setvariable variable=ARM_SUBSCRIPTION_ID]$(az account show --query="id" -o tsv)"
+        echo "##vso[task.setvariable variable=ARM_CLIENT_ID]${servicePrincipalId}"
+        echo "##vso[task.setvariable variable=ARM_CLIENT_SECRET]${servicePrincipalKey}"
+        echo "##vso[task.setvariable variable=ARM_TENANT_ID]$(az account show --query="tenantId" -o tsv)"
 
 # - stage: Deploy
 #   displayName: Deploy
