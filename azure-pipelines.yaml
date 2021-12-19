@@ -18,15 +18,15 @@ parameters:
   default:
   - name: frontend
     repo: xlabs-venue-web
-  - name: backend
-    repo: xlabs-venue-api
+  #- name: backend
+  #  repo: xlabs-venue-api
 variables:
   acrName: makeitrepeatable
   imageName: xlabs-venue-web
   dockerRegistryServiceConnection: makeitrepeatable-acr
 stages:
 - stage: Build
-  displayName: Build image
+  displayName: Build
   jobs:
   - job: Build
     displayName: Build
@@ -59,16 +59,6 @@ stages:
           repository: ${{ app.name }}
           tags: |
             $(Build.BuildId)
-    # - task: Docker@2
-    #   displayName: Build backend an image and push to $(acrName)
-    #   inputs:
-    #     command: buildAndPush
-    #     dockerfile: '$(System.DefaultWorkingDirectory)/xlabs-venue-api/Dockerfile'
-    #     containerRegistry: $(dockerRegistryServiceConnection)
-    #     repository: xlabs-venue-api
-    #     tags: |
-    #       $(Build.BuildId)
-
 
 # - stage: Deploy
 #   displayName: Deploy
