@@ -45,7 +45,7 @@ stages:
       displayName: Install .NET SDK
     - bash: |
         cd xlabs-venue-api
-        dotnet build
+        dotnet help
     # - task: DotNetCoreCLI@2
     #   inputs:
     #     command: 'build'
