@@ -6,7 +6,7 @@ resources:
     - repository: frontend
       type: git
       name: xlabs/xlabs-venue-web
-      ref: refs/heads/master
+      ref: refs/heads/main
 
 variables:
   acrName: makeitrepeatable
