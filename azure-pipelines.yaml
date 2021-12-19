@@ -13,7 +13,7 @@ resources:
       ref: refs/heads/main
 
 parameters:
-- name: images
+- name: apps
   type: object
   default:
   - name: frontend
@@ -32,8 +32,9 @@ stages:
       vmImage: ubuntu-latest
     steps:
     - checkout: self
-    - checkout: frontend
-    - checkout: backend
+    - ${{ each app in parameters.apps }}:
+      - checkout: frontend
+      - checkout: backend
     - bash: |
         wget https://packages.microsoft.com/config/ubuntu/21.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
         sudo dpkg -i packages-microsoft-prod.deb
