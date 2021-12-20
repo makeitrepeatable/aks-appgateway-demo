@@ -50,3 +50,11 @@ output "kube_config" {
 
   sensitive = true
 }
+
+output "aksName" {
+  value = azurerm_kubernetes_cluster.aks.name
+}
+
+output "aksRGName" {
+  value = azurerm_resource_group.xlabs.name
+}
