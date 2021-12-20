@@ -100,17 +100,12 @@ stages:
           azuresubscription: ${{ parameters.serviceConnection }}
           KeyVaultName: makeitrepeatablekv
           SecretsFilter: '*'
-
-
-  # - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-  #   displayName: 'replace tokens in terraform dir'
-  #   inputs:
-  #     targetFiles: |
-  #       ${{ parameters.terraformDir }}/**/*.yml
-  #       ${{ parameters.terraformDir }}/**/*.xml
-  #       ${{ parameters.terraformDir }}/**/*.tfvars
-  #     verbosity: on
-
+      - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+        displayName: 'replace tokens in terraform dir'
+        inputs:
+          targetFiles: |
+            /**/*.yaml
+          verbosity: on
       - task: AzureCLI@1
         displayName: 'setup az authentication: ${{ parameters.serviceConnection }}'
         inputs:

@@ -21,7 +21,7 @@ spec:
         "beta.kubernetes.io/os": linux
       containers:
       - name: xlabs-venue-api
-        image: makeitrepeatable.azurecr.io/xlabs-venue-web:$(Build.BuildId)
+        image: makeitrepeatable.azurecr.io/xlabs-venue-web:#{Build.BuildId}#
         ports:
         - containerPort: 3000
         resources:
@@ -29,14 +29,4 @@ spec:
             cpu: 250m
           limits:
             cpu: 500m
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: xlabs-venue-api
-spec:
-  type: LoadBalancer
-  ports:
-  - port: 3000
-  selector:
-    app: xlabs-venue-api
+
