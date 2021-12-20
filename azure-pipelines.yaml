@@ -171,21 +171,6 @@ stages:
           ARM_CLIENT_ID: $(ARM_CLIENT_ID)
           ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
           ARM_TENANT_ID: $(ARM_TENANT_ID)
-      - task: TerraformCLI@0
-        displayName: 'terraform output'
-        inputs:
-          command: output
-      - task: AzureCLI@1
-        displayName: 'set kubectl context'
-        inputs:
-          azureSubscription: ${{ parameters.serviceConnection }}
-          scriptLocation: inlineScript
-          inlineScript: |
-            az aks get-credentials -n $(TF_OUT_AKSNAME) -g $(TF_OUT_AKSRGNAME) --admin
-            kubectl config use-context $(TF_OUT_AKSNAME)-admin
-            kubectl create ns frontend
-            kubectl create -f aks-config/frontend.yaml -n frontend
-            kubectl get po -n frontend
 - stage: Deploy_Apps
   displayName: Deploy apps
   dependsOn: Deploy_Infra
