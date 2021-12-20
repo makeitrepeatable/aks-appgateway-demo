@@ -28,10 +28,6 @@ parameters:
 - name: stateFileName
   type: string
   default: xlabs.tfstate  
-- name: system.debug
-  default: true    
-- name: args
-  default: ""
 - name: prefix
   default: xlabs
 - name: apps
