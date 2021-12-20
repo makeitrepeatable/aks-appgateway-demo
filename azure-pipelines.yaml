@@ -29,7 +29,9 @@ parameters:
   type: string
   default: xlabs.tfstate  
 - name: system.debug
-  default: true      
+  default: true    
+- name: args
+  default: '-var prefix="xlabs"'  
 
 - name: apps
   type: object
@@ -145,7 +147,7 @@ stages:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |
-              terraform plan -input=false -out plan.out > tf.plan
+              terraform plan ${{ parameters.extraArgs }} -input=false -out plan.out > tf.plan
               cat tf.plan
         env:
           ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
@@ -182,7 +184,16 @@ stages:
             kubectl create ns frontend
             kubectl create -f aks-config/frontend.yaml -n frontend
             kubectl get po -n frontend
-
+- stage: Deploy_Apps
+  displayName: Deploy apps
+  dependsOn: Deploy_Infra
+  jobs:
+  - job: Deploy
+    displayName: Deploy
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - checkout: self
       #kubectl create ns
       #kubectl create -f aks-config/deployment.yaml
       #az aks update -n myAKSCluster -g myResourceGroup --attach-acr $MYACR

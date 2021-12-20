@@ -4,15 +4,15 @@ terraform {
   }
 }
 resource "azurerm_resource_group" "xlabs" {
-  name     = "xlab-platform"
+  name     = "${var.prefix}-rg"
   location = "uksouth"
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
-  name                = "xlabs-aks"
+  name                = "${var.prefix}-aks"
   location            = azurerm_resource_group.xlabs.location
   resource_group_name = azurerm_resource_group.xlabs.name
-  dns_prefix          = "xlabs"
+  dns_prefix          = var.prefix
 
   default_node_pool {
     name       = "default"
