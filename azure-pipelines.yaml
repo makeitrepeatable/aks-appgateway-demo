@@ -97,10 +97,10 @@ stages:
           KeyVaultName: makeitrepeatablekv
           SecretsFilter: '*'
       - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-        displayName: 'replace tokens in terraform dir'
+        displayName: 'replace tokens k8s yaml'
         inputs:
           targetFiles: |
-            /**/*.yaml
+            **/*.yaml
           verbosity: on
       - task: AzureCLI@1
         displayName: 'setup az authentication: ${{ parameters.serviceConnection }}'
