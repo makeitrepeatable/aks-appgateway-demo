@@ -4,7 +4,7 @@ terraform {
   }
 }
 resource "azurerm_resource_group" "xlabs" {
-  name     = "${var.prefix}-rg"
+  name     = "${var.prefix}-aks-rg"
   location = "uksouth"
 }
 
