@@ -202,3 +202,10 @@ stages:
           scriptLocation: inlineScript
           inlineScript: |
             kubectl create -f aks-config/${{ app.name }}.yaml -n ${{ app.name }}         
+      - task: AzureCLI@1
+        displayName: 'check ${{ app.name }} pod'
+        inputs:
+          azureSubscription: ${{ parameters.serviceConnection }}
+          scriptLocation: inlineScript
+          inlineScript: |
+            kubectl get po -n ${{ app.name }}   
