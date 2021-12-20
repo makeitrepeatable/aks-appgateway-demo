@@ -34,15 +34,13 @@ parameters:
   default: ""
 - name: prefix
   default: xlabs
-  #${{ format('-var prefix=xlabs') }}
-
 - name: apps
   type: object
   default:
   - name: frontend
     repo: xlabs-venue-web
-  #- name: backend
-  #  repo: xlabs-venue-api
+  - name: backend
+    repo: xlabs-venue-api
 variables:
   acrName: makeitrepeatable
   imageName: xlabs-venue-web
