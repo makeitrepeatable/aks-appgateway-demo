@@ -204,10 +204,17 @@ stages:
         inlineScript: |
           az aks get-credentials -n '${{ parameters.prefix }}-aks' -g '${{ parameters.prefix }}-aks-rg' --admin
           kubectl config use-context '${{ parameters.prefix }}-aks-admin'
-#          kubectl create ns frontend
-#          kubectl create -f aks-config/frontend.yaml -n frontend
-#          kubectl get po -n frontend    
-      #kubectl create ns
-      #kubectl create -f aks-config/deployment.yaml
-      #az aks update -n myAKSCluster -g myResourceGroup --attach-acr $MYACR
-
+    - task: AzureCLI@1
+      displayName: 'create namespace'
+      inputs:
+        azureSubscription: ${{ parameters.serviceConnection }}
+        scriptLocation: inlineScript
+        inlineScript: |
+          kubectl create ns frontend
+    - task: AzureCLI@1
+      displayName: 'create deployment'
+      inputs:
+        azureSubscription: ${{ parameters.serviceConnection }}
+        scriptLocation: inlineScript
+        inlineScript: |
+          kubectl create -f aks-config/frontend.yaml -n frontend         
