@@ -31,7 +31,7 @@ parameters:
 - name: system.debug
   default: true    
 - name: args
-  default: '-var prefix="xlabs"'  
+  default: "'-var prefix=xlabs'"
 
 - name: apps
   type: object
