@@ -31,7 +31,8 @@ parameters:
 - name: system.debug
   default: true    
 - name: args
-  default: ${{ format('-var prefix=xlabs') }}
+  default: ""
+  #${{ format('-var prefix=xlabs') }}
 
 - name: apps
   type: object
@@ -147,7 +148,7 @@ stages:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |
-              terraform plan ${{ parameters.extraArgs }} -input=false -out plan.out > tf.plan
+              terraform plan -var 'prefix=xlabs' -input=false -out plan.out > tf.plan
               cat tf.plan
         env:
           ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
