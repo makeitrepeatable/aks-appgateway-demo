@@ -32,6 +32,8 @@ parameters:
   default: true    
 - name: args
   default: ""
+- name: prefix
+  default: xlabs
   #${{ format('-var prefix=xlabs') }}
 
 - name: apps
