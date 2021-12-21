@@ -76,9 +76,9 @@ stages:
 #           repository: ${{ app.name }}
 #           tags: |
 #             $(Build.BuildId)
-- bash: |
-    ##vso[task.setvariable variable=tag]${Build.BuildId}"
-- bash: echo $(tag)
+        - bash: |
+            ##vso[task.setvariable variable=tag]${Build.BuildId}"
+        - bash: echo $(tag)
 - stage: Deploy_Infra
   displayName: Deploy Infra
 #  dependsOn: Build
