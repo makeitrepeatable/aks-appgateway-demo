@@ -181,10 +181,10 @@ stages:
       - task: DownloadBuildArtifacts@0
         inputs:
           artifactName: aksConfig
-#          downloadPath: ${{ parameters.terraformDirectory }}
+          downloadPath: ./
       - bash: |
           cd aksConfig
-          cat frontend.yaml
+          ls
       - task: AzureCLI@1
         displayName: 'set kubectl context'
         inputs:
