@@ -165,7 +165,7 @@ stages:
         displayName: 'publish terraform files'
         inputs:
           artifactName: aksConfig
-          PathtoPublish: /aks-config/*.yaml
+          PathtoPublish: /aks-config/
 
 - ${{ each app in parameters.apps }}:  
   - stage: Deploy_Apps_${{ app.name }}
