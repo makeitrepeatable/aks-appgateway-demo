@@ -76,9 +76,6 @@ stages:
 #           repository: ${{ app.name }}
 #           tags: |
 #             $(Build.BuildId)
-        - bash: |
-            ##vso[task.setvariable variable=tag]${Build.BuildId}"
-        - bash: echo $(tag)
 - stage: Deploy_Infra
   displayName: Deploy Infra
 #  dependsOn: Build
@@ -87,7 +84,10 @@ stages:
     displayName: Terraform plan
     pool:
       vmImage: ubuntu-latest
-    steps:     
+    steps:  
+      - bash: |
+          ##vso[task.setvariable variable=tag]${Build.BuildId}"
+      - bash: echo $(tag)   
       - checkout: self  
       - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
         displayName: 'Use terraform 1.1.0'
