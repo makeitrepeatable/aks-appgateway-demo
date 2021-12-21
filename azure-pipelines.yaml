@@ -160,11 +160,11 @@ stages:
           ARM_CLIENT_ID: $(ARM_CLIENT_ID)
           ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
           ARM_TENANT_ID: $(ARM_TENANT_ID)
-- task: PublishBuildArtifacts@1
-  displayName: 'publish terraform files'
-  inputs:
-    artifactName: aksConfig
-    PathtoPublish: /aks-config/*.yaml
+      - task: PublishBuildArtifacts@1
+        displayName: 'publish terraform files'
+        inputs:
+          artifactName: aksConfig
+          PathtoPublish: /aks-config/*.yaml
 
 - ${{ each app in parameters.apps }}:  
   - stage: Deploy_Apps_${{ app.name }}
