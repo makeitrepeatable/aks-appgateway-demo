@@ -96,6 +96,12 @@ stages:
           azuresubscription: ${{ parameters.serviceConnection }}
           KeyVaultName: makeitrepeatablekv
           SecretsFilter: '*'
+      - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+        displayName: 'replace tokens k8s yaml'
+        inputs:
+          targetFiles: |
+            **/*.yaml
+          verbosity: on          
       - task: AzureCLI@1
         displayName: 'setup az authentication: ${{ parameters.serviceConnection }}'
         inputs:
@@ -154,6 +160,12 @@ stages:
           ARM_CLIENT_ID: $(ARM_CLIENT_ID)
           ARM_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
           ARM_TENANT_ID: $(ARM_TENANT_ID)
+- task: PublishBuildArtifacts@1
+  displayName: 'publish terraform files'
+  inputs:
+    artifactName: aksConfig
+    PathtoPublish: /aks-config/*.yaml
+
 - ${{ each app in parameters.apps }}:  
   - stage: Deploy_Apps_${{ app.name }}
     displayName: Deploy ${{ app.name }}
@@ -164,13 +176,14 @@ stages:
       pool:
         vmImage: ubuntu-latest
       steps:
-      - checkout: self
-      - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-        displayName: 'replace tokens k8s yaml'
+#      - checkout: self
+      - task: DownloadBuildArtifacts@0
         inputs:
-          targetFiles: |
-            **/*.yaml
-          verbosity: on
+          artifactName: aksConfig
+#          downloadPath: ${{ parameters.terraformDirectory }}
+      - bash: |
+          cd aksConfig
+          cat frontend.yaml
       - task: AzureCLI@1
         displayName: 'set kubectl context'
         inputs:
