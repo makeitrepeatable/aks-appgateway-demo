@@ -21,7 +21,7 @@ spec:
         "beta.kubernetes.io/os": linux
       containers:
       - name: xlabs-venue-web
-        image: makeitrepeatable.azurecr.io/xlabs-venue-web:#{Build.BuildId}#
+        image: makeitrepeatable.azurecr.io/frontend:#{Build.BuildId}#
         ports:
         - containerPort: 80
         resources:
