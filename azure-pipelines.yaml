@@ -96,12 +96,6 @@ stages:
           azuresubscription: ${{ parameters.serviceConnection }}
           KeyVaultName: makeitrepeatablekv
           SecretsFilter: '*'
-      - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-        displayName: 'replace tokens k8s yaml'
-        inputs:
-          targetFiles: |
-            **/*.yaml
-          verbosity: on
       - task: AzureCLI@1
         displayName: 'setup az authentication: ${{ parameters.serviceConnection }}'
         inputs:
@@ -171,6 +165,12 @@ stages:
         vmImage: ubuntu-latest
       steps:
       - checkout: self
+      - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+        displayName: 'replace tokens k8s yaml'
+        inputs:
+          targetFiles: |
+            **/*.yaml
+          verbosity: on
       - task: AzureCLI@1
         displayName: 'set kubectl context'
         inputs:
