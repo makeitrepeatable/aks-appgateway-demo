@@ -184,8 +184,6 @@ stages:
         inputs:
           artifactName: aksConfig
           downloadPath: ./
-      - bash: |
-          cat aksConfig/frontend.yaml
       - task: AzureCLI@1
         displayName: 'set kubectl context'
         inputs:
@@ -211,6 +209,7 @@ stages:
           azureSubscription: ${{ parameters.serviceConnection }}
           scriptLocation: inlineScript
           inlineScript: |
+            cat aks-config/${{ app.name }}.yaml
             kubectl apply -f aks-config/${{ app.name }}.yaml -n ${{ app.name }}         
       - task: AzureCLI@1
         displayName: 'check ${{ app.name }} pod'
