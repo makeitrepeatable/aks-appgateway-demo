@@ -169,47 +169,49 @@ stages:
           artifactName: aksConfig
           PathtoPublish: ./aks-config/
 
-# - ${{ each app in parameters.apps }}:  
-#   - stage: Deploy_Apps_${{ app.name }}
-#     displayName: Deploy ${{ app.name }}
-#     dependsOn: deploy_infra
-#     jobs:
-#     - job: Deploy
-#       displayName: Deploy
-#       pool:
-#         vmImage: ubuntu-latest
-#       steps:
-# #      - checkout: self
-#       - task: DownloadBuildArtifacts@0
-#         inputs:
-#           artifactName: aksConfig
-#           downloadPath: ./
-#       - task: AzureCLI@1
-#         displayName: 'set kubectl context'
-#         inputs:
-#           azureSubscription: ${{ parameters.serviceConnection }}
-#           scriptLocation: inlineScript
-#           inlineScript: |
-#             az aks get-credentials -n '${{ parameters.prefix }}-aks' -g '${{ parameters.prefix }}-aks-rg' --admin
-#             kubectl config use-context '${{ parameters.prefix }}-aks-admin'
-#       - task: AzureCLI@1
-#         displayName: 'create namespace'
-#         inputs:
-#           azureSubscription: ${{ parameters.serviceConnection }}
-#           scriptLocation: inlineScript
-#           inlineScript: |
-#             kubectl create ns ${{ app.name }}
-#       - task: AzureCLI@1
-#         displayName: 'create ${{ app.name }} deployment'
-#         inputs:
-#           azureSubscription: ${{ parameters.serviceConnection }}
-#           scriptLocation: inlineScript
-#           inlineScript: |
-#             kubectl create -f aks-config/${{ app.name }}.yaml -n ${{ app.name }}         
-#       - task: AzureCLI@1
-#         displayName: 'check ${{ app.name }} pod'
-#         inputs:
-#           azureSubscription: ${{ parameters.serviceConnection }}
-#           scriptLocation: inlineScript
-#           inlineScript: |
-#             kubectl get po -n ${{ app.name }}   
+- ${{ each app in parameters.apps }}:  
+  - stage: Deploy_Apps_${{ app.name }}
+    displayName: Deploy ${{ app.name }}
+    dependsOn: deploy_infra
+    jobs:
+    - job: Deploy
+      displayName: Deploy
+      pool:
+        vmImage: ubuntu-latest
+      steps:
+#      - checkout: self
+      - task: DownloadBuildArtifacts@0
+        inputs:
+          artifactName: aksConfig
+          downloadPath: ./
+      - bash: |
+          cat aksConfig/frontend.yaml
+      - task: AzureCLI@1
+        displayName: 'set kubectl context'
+        inputs:
+          azureSubscription: ${{ parameters.serviceConnection }}
+          scriptLocation: inlineScript
+          inlineScript: |
+            az aks get-credentials -n '${{ parameters.prefix }}-aks' -g '${{ parameters.prefix }}-aks-rg' --admin
+            kubectl config use-context '${{ parameters.prefix }}-aks-admin'
+      # - task: AzureCLI@1
+      #   displayName: 'create namespace'
+      #   inputs:
+      #     azureSubscription: ${{ parameters.serviceConnection }}
+      #     scriptLocation: inlineScript
+      #     inlineScript: |
+      #       kubectl create ns ${{ app.name }}
+      # - task: AzureCLI@1
+      #   displayName: 'create ${{ app.name }} deployment'
+      #   inputs:
+      #     azureSubscription: ${{ parameters.serviceConnection }}
+      #     scriptLocation: inlineScript
+      #     inlineScript: |
+      #       kubectl create -f aks-config/${{ app.name }}.yaml -n ${{ app.name }}         
+      # - task: AzureCLI@1
+      #   displayName: 'check ${{ app.name }} pod'
+      #   inputs:
+      #     azureSubscription: ${{ parameters.serviceConnection }}
+      #     scriptLocation: inlineScript
+      #     inlineScript: |
+      #       kubectl get po -n ${{ app.name }}   
