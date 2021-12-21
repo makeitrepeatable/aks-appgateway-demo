@@ -76,6 +76,9 @@ stages:
 #           repository: ${{ app.name }}
 #           tags: |
 #             $(Build.BuildId)
+- bash: |
+    ##vso[task.setvariable variable=tag]${Build.BuildId}"
+- bash: echo $(tag)
 - stage: Deploy_Infra
   displayName: Deploy Infra
 #  dependsOn: Build
@@ -182,9 +185,6 @@ stages:
         inputs:
           artifactName: aksConfig
           downloadPath: ./
-      - bash: |
-          cd aksConfig
-          ls
       - task: AzureCLI@1
         displayName: 'set kubectl context'
         inputs:
