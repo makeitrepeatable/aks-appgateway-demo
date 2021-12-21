@@ -200,7 +200,7 @@ stages:
           azureSubscription: ${{ parameters.serviceConnection }}
           scriptLocation: inlineScript
           inlineScript: |
-            kubectl create namespace cert-manager --dry-run=server
+            kubectl create namespace ${{ app.name }} --dry-run=server
             if [ ${?} -eq 0 ]
             then
               kubectl create namespace ${{ app.name }}
