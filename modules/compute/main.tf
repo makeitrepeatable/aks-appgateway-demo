@@ -168,3 +168,11 @@ output "kube_config" {
 output "aksName" {
   value = azurerm_kubernetes_cluster.aks.name
 }
+
+output "identity_resource_id" {
+  value = azurerm_user_assigned_identity.aksmsi.id
+}
+
+output "identity_client_id" {
+  value = azurerm_user_assigned_identity.aksmsi.client_id
+}
