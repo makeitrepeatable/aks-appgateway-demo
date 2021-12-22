@@ -209,11 +209,13 @@ stages:
           azureSubscription: ${{ parameters.serviceConnection }}
           scriptLocation: inlineScript
           inlineScript: |
-            kubectl apply -f aksConfig/${{ app.name }}.yaml -n ${{ app.name }}         
+            kubectl apply -f aksConfig/${{ app.name }}.yaml
+#             -n ${{ app.name }}         
       - task: AzureCLI@1
         displayName: 'check ${{ app.name }} pod'
         inputs:
           azureSubscription: ${{ parameters.serviceConnection }}
           scriptLocation: inlineScript
           inlineScript: |
-            kubectl get po -n ${{ app.name }}   
+            kubectl get po 
+#            -n ${{ app.name }}   
