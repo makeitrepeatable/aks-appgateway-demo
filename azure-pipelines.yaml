@@ -177,8 +177,8 @@ stages:
         inputs:
             command: output  
       - bash: |
-          echo $(TF_OUT_IDENTITY_RESOURCE_ID)
-          echo $(TF_OUT_IDENTITY_CLIENT_ID)                
+          echo "##vso[task.setvariable variable=IDENTITY_RESOURCE_ID]$(TF_OUT_IDENTITY_RESOURCE_ID)"
+          echo "##vso[task.setvariable variable=IDENTITY_CLIENT_ID]$(TF_OUT_IDENTITY_CLIENT_ID)"              
       - task: PublishBuildArtifacts@1
         displayName: 'publish terraform files'
         inputs:
@@ -195,8 +195,8 @@ stages:
         vmImage: ubuntu-latest
       steps:
       - bash: |
-          echo $(TF_OUT_IDENTITY_RESOURCE_ID)
-          echo $(TF_OUT_IDENTITY_CLIENT_ID)
+          echo $(IDENTITY_RESOURCE_ID)
+          echo $(IDENTITY_CLIENT_ID)
       - task: DownloadBuildArtifacts@0
         inputs:
           artifactName: aksConfig

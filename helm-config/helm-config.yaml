@@ -33,8 +33,8 @@ appgw:
 # - Option 1: AAD-Pod-Identity (https://github.com/Azure/aad-pod-identity)
 armAuth:
     type: aadPodIdentity
-    identityResourceID: #{TF_OUT_IDENTITY_RESOURCE_ID}#
-    identityClientID:  #{TF_OUT_IDENTITY_CLIENT_ID}#
+    identityResourceID: #{IDENTITY_RESOURCE_ID}#
+    identityClientID:  #{IDENTITY_CLIENT_ID}#
     
 
 
