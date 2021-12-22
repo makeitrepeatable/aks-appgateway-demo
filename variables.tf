@@ -35,7 +35,9 @@ variable "location" {
     default = "uksouth"
 }
 
-variable "OBJECT_ID" {}
+variable "OBJECT_ID" {
+    default = "b9e6db17-8822-4bcc-aa78-957c26a9902e"
+}
 
 variable "CLIENT_ID" {}
 variable "CLIENT_SECRET" {}
