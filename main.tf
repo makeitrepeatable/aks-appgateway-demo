@@ -73,6 +73,10 @@ resource "local_file" "foo" {
     filename = "${path.module}/${var.OBJECT_ID}.txt"
 }
 
+output "filename" {
+  value = local_file.foo.filename
+}
+
 /*
 resource "azurerm_application_gateway" "network" {
     name                = "${var.prefix}-appgateway"
