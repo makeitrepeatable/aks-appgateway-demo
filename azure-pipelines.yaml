@@ -120,7 +120,7 @@ stages:
       - bash: |
           echo 'object id: $(ARM_OBJECT_ID)'
           echo "${servicePrincipalId}"
-          echo "${servicePrincipalObjectId}"
+          echo "$(ARM_CLIENT_ID)"
       - task: AzureCLI@2
         displayName: "Terraform init"
         inputs:
