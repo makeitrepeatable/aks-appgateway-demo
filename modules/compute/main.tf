@@ -125,11 +125,34 @@ data "azurerm_container_registry" "acr" {
     resource_group_name = "makeitrepeatable-acr"
 }
 
+# assign roles to managed identities 
 resource "azurerm_role_assignment" "attach_acr" {
   scope                = data.azurerm_container_registry.acr.id
   role_definition_name = "AcrPull"
   principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
 
+}
+/*
+resource "azurerm_role_assignment" "network" {
+    scope                = data.azurerm_subnet.aks.id
+    role_definition_name = "Network Contributor"
+    principal_id         = var.aks_service_principal_object_id 
+
+    depends_on = [azurerm_virtual_network.test]
+}
+
+resource "azurerm_role_assignment" "msi" {
+    scope                = azurerm_user_assigned_identity.testIdentity.id
+    role_definition_name = "Managed Identity Operator"
+    principal_id         = var.aks_service_principal_object_id
+    depends_on           = [azurerm_user_assigned_identity.testIdentity]
+}
+*/
+resource "azurerm_role_assignment" "contributor" {
+    scope                = azurerm_application_gateway.network.id
+    role_definition_name = "Contributor"
+    principal_id         = azurerm_user_assigned_identity.aksmsi.principal_id
+    depends_on           = [azurerm_user_assigned_identity.aksmsi, azurerm_application_gateway.network]
 }
 
 output "client_certificate" {

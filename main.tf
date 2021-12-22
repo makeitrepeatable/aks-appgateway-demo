@@ -1,8 +1,8 @@
-#terraform {
-#  backend "azurerm" {
-#    key = "xlabs.tfstate"
-#  }
-#}
+terraform {
+  backend "azurerm" {
+    key = "xlabs.tfstate"
+  }
+}
 
 locals {
   subnets = [
