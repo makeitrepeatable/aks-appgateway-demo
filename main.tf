@@ -2,7 +2,7 @@
 
 terraform {
   backend "azurerm" {
-    key = "xlabs.tfstate"
+    key = "terraform.tfstate"
   }
 }
 
@@ -67,7 +67,6 @@ output "identity_resource_id" {
 output "identity_client_id" {
   value = module.compute.identity_client_id
 }
-
 
 /*
 resource "azurerm_application_gateway" "network" {
