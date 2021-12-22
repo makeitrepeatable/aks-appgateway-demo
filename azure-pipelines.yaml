@@ -135,7 +135,7 @@ stages:
           ARM_TENANT_ID: $(ARM_TENANT_ID)   
           TF_VAR_OBJECT_ID: $(ARM_OBJECT_ID)  
           TF_VAR_CLIENT_SECRET: $(ARM_CLIENT_SECRET) 
-          TF_VAR_ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+          TF_VAR_CLIENT_ID: $(ARM_CLIENT_ID)
       - task: AzureCLI@2
         displayName: "Terraform plan"
         inputs:
@@ -153,7 +153,7 @@ stages:
           ARM_TENANT_ID: $(ARM_TENANT_ID)
           TF_VAR_OBJECT_ID: $(ARM_OBJECT_ID)
           TF_VAR_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
-          TF_VAR_ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+          TF_VAR_CLIENT_ID: $(ARM_CLIENT_ID)
 
       - task: AzureCLI@1
         inputs:
@@ -171,7 +171,7 @@ stages:
           ARM_TENANT_ID: $(ARM_TENANT_ID)
           TF_VAR_OBJECT_ID: $(ARM_OBJECT_ID)
           TF_VAR_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
-          TF_VAR_ARM_CLIENT_ID: $(ARM_CLIENT_ID)
+          TF_VAR_CLIENT_ID: $(ARM_CLIENT_ID)
       - bash: ls
       - task: PublishBuildArtifacts@1
         displayName: 'publish terraform files'
@@ -189,7 +189,6 @@ stages:
       pool:
         vmImage: ubuntu-latest
       steps:
-#      - checkout: self
       - task: DownloadBuildArtifacts@0
         inputs:
           artifactName: aksConfig
