@@ -45,3 +45,8 @@ variable "virtual_network_name" {
 variable "location" {
     type = string
 }
+
+variable "spn_object_id" {}
+
+variable "spn_client_id" {}
+variable "spn_client_secret" {}

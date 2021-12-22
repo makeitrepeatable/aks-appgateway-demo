@@ -111,8 +111,13 @@ resource "azurerm_kubernetes_cluster" "aks" {
     service_cidr       = var.aks_service_cidr
     }
 
-  identity {
-    type = "SystemAssigned"
+  service_principal {
+    client_id     = var.spn_client_id
+    client_secret = var.spn_client_secret
+    }
+
+  role_based_access_control {
+    enabled = false
   }
 
   tags = {
@@ -132,22 +137,22 @@ resource "azurerm_role_assignment" "attach_acr" {
   principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
 
 }
-/*
+
 resource "azurerm_role_assignment" "network" {
     scope                = data.azurerm_subnet.aks.id
     role_definition_name = "Network Contributor"
-    principal_id         = var.aks_service_principal_object_id 
+    principal_id         = var.spn_object_id 
 
-    depends_on = [azurerm_virtual_network.test]
+
 }
 
 resource "azurerm_role_assignment" "msi" {
-    scope                = azurerm_user_assigned_identity.testIdentity.id
+    scope                = azurerm_user_assigned_identity.aksmsi.id
     role_definition_name = "Managed Identity Operator"
-    principal_id         = var.aks_service_principal_object_id
-    depends_on           = [azurerm_user_assigned_identity.testIdentity]
+    principal_id         = var.spn_object_id
+    depends_on           = [azurerm_user_assigned_identity.aksmsi]
 }
-*/
+
 resource "azurerm_role_assignment" "contributor" {
     scope                = azurerm_application_gateway.network.id
     role_definition_name = "Contributor"

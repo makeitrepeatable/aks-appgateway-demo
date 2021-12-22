@@ -34,3 +34,7 @@ variable "location" {
     type = string
     default = "uksouth"
 }
+
+variable "CLIENT_ID" {}
+variable "OBJECT_ID" {}
+variable "CLIENT_SECRET" {}

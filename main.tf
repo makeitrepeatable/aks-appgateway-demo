@@ -50,6 +50,9 @@ module "compute" {
   virtual_network_name = module.foundation.virtual_network_name
   location = var.location
   depends_on = [ module.foundation ]
+  spn_object_id = var.OBJECT_ID
+  spn_client_secret = var.CLIENT_SECRET
+  spn_client_id = var.CLIENT_ID
 }
 
 
