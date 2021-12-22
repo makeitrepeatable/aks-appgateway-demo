@@ -48,3 +48,5 @@ variable "location" {
 
 variable "spn_client_id" {}
 variable "spn_client_secret" {}
+
+variable "spn_object_id" {}

@@ -1,6 +1,6 @@
 variable "prefix" {
     type = string
-    default ="xlabs"
+    default ="makeitrepeatable"
 }
 
 variable "virtual_network_address_prefix" {
@@ -35,7 +35,9 @@ variable "location" {
     default = "uksouth"
 }
 
-variable "CLIENT_ID" {
-    default = "bc84c5dd-a014-477d-8054-eb4c3617a008"
+variable "OBJECT_ID" {
+    default = "b9e6db17-8822-4bcc-aa78-957c26a9902e"
 }
+
+variable "CLIENT_ID" {}
 variable "CLIENT_SECRET" {}

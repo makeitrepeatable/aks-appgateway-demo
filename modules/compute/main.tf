@@ -135,13 +135,13 @@ resource "azurerm_role_assignment" "attach_acr" {
 resource "azurerm_role_assignment" "network" {
     scope                = data.azurerm_subnet.aks.id
     role_definition_name = "Network Contributor"
-    principal_id         = var.spn_client_id
+    principal_id         = var.spn_object_id
 }
 
 resource "azurerm_role_assignment" "msi" {
     scope                = azurerm_user_assigned_identity.aksmsi.id
     role_definition_name = "Managed Identity Operator"
-    principal_id         = var.spn_client_id
+    principal_id         = var.spn_object_id
     depends_on           = [azurerm_user_assigned_identity.aksmsi]
 }
 

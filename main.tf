@@ -1,10 +1,11 @@
 
+/*
 terraform {
   backend "azurerm" {
     key = "xlabs.tfstate"
   }
 }
-
+*/
 locals {
   subnets = [
     {
@@ -53,6 +54,7 @@ module "compute" {
   depends_on = [ module.foundation ]
   spn_client_secret = var.CLIENT_SECRET
   spn_client_id = var.CLIENT_ID
+  spn_object_id = var.OBJECT_ID
 }
 
 
