@@ -119,7 +119,7 @@ stages:
             echo "##vso[task.setvariable variable=ARM_OBJECT_ID]${servicePrincipalObjectId}"
       - bash: |
           echo 'object id: $(ARM_OBJECT_ID)'
-          echo 'also object id: ${servicePrincipalObjectId}'
+          echo "${servicePrincipalObjectId}"
       - task: AzureCLI@2
         displayName: "Terraform init"
         inputs:
