@@ -5,16 +5,6 @@
 #}
 
 locals {
-  subnets = [
-    {
-      name = "aks-subnet"
-      address_prefix = "10.1.1.0/24"
-    },
-    {
-      name = "appgateway-subnet"
-      address_prefix = "10.1.2.0/24"
-    }    
-  ]
     backend_address_pool_name      = "${var.prefix}-beap"
   frontend_port_name             = "${var.prefix}-feport"
   frontend_ip_configuration_name = "${var.prefix}-feip"
@@ -23,39 +13,10 @@ locals {
   request_routing_rule_name      = "${var.prefix}-rqrt"
 }
 
-variable "subnets" {
-  type = map
-  default = {
-    aks-subnet = {
-      name = "aks-subnet"
-      address_prefix = "10.1.1.0/24"
-    }
-    appgateway-subnet = {
-      name = "appgateway-subnet"
-      address_prefix = "10.1.2.0/24"
-    }
-  }
-}
-
-module "foundation" {
-  source = ".//modules/foundation"
-  prefix = var.prefix
-  location = var.location
-}
-
-module "compute" {
-  source = ".//modules/compute"
-  resource_group_name = module.foundation.resource_group_name
-  public_ip_address = module.foundation.public_ip_address_id
-  virtual_network_name = module.foundation.virtual_network_name
-  location = var.location
-  depends_on = [ module.foundation ]
-}
-/*
 resource "azurerm_application_gateway" "network" {
     name                = "${var.prefix}-appgateway"
-    resource_group_name = azurerm_resource_group.xlabs.name
-    location            = azurerm_resource_group.xlabs.location
+    resource_group_name = var.resource_group_name
+    location            = var.location
 
     sku {
     name     = "Standard_v2"
@@ -65,7 +26,7 @@ resource "azurerm_application_gateway" "network" {
 
     gateway_ip_configuration {
     name      = "appGatewayIpConfig"
-    subnet_id = data.azurerm_subnet.appgateway_subnet.id
+    subnet_id = data.azurerm_subnet.appgateway.id
     }
 
   # could use a dynamic resource here
@@ -77,7 +38,7 @@ resource "azurerm_application_gateway" "network" {
 
     frontend_ip_configuration {
     name                 = local.frontend_ip_configuration_name
-    public_ip_address_id = azurerm_public_ip.pip.id
+    public_ip_address_id = var.public_ip_address
     }
 
     backend_address_pool {
@@ -111,13 +72,12 @@ resource "azurerm_application_gateway" "network" {
     Environment = "dev"
   }
 
-    depends_on = [azurerm_virtual_network.aks_vnet, azurerm_public_ip.pip]
 }
 
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = "${var.prefix}-aks"
-  location            = azurerm_resource_group.xlabs.location
-  resource_group_name = azurerm_resource_group.xlabs.name
+  resource_group_name = var.resource_group_name
+  location            = var.location
   dns_prefix          = var.prefix
 
   addon_profile {
@@ -130,7 +90,7 @@ resource "azurerm_kubernetes_cluster" "aks" {
     name       = "default"
     node_count = 1
     vm_size    = "Standard_D2_v2"
-    vnet_subnet_id = data.azurerm_subnet.aks_subnet.id
+    vnet_subnet_id = data.azurerm_subnet.aks.id
   }
 
 
@@ -176,8 +136,3 @@ output "kube_config" {
 output "aksName" {
   value = azurerm_kubernetes_cluster.aks.name
 }
-
-output "aksRGName" {
-  value = azurerm_resource_group.xlabs.name
-}
-*/
