@@ -13,6 +13,15 @@ locals {
   request_routing_rule_name      = "${var.prefix}-rqrt"
 }
 
+# User assigned identity 
+resource "azurerm_user_assigned_identity" "aksmsi" {
+    resource_group_name = var.resource_group_name
+    location            = var.location
+
+    name = "${var.prefix}-aks-identity"
+
+}
+
 resource "azurerm_application_gateway" "network" {
     name                = "${var.prefix}-appgateway"
     resource_group_name = var.resource_group_name
