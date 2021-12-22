@@ -70,7 +70,7 @@ output "identity_client_id" {
 
 resource "local_file" "foo" {
     content     = "foo!"
-    filename = "${path.module}/${OBJECT_ID}.txt"
+    filename = "${path.module}/${var.OBJECT_ID}.txt"
 }
 
 /*
