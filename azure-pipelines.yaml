@@ -172,13 +172,15 @@ stages:
           TF_VAR_CLIENT_SECRET: $(ARM_CLIENT_SECRET)
           TF_VAR_CLIENT_ID: $(ARM_CLIENT_ID)
           TF_VAR_OBJECT_ID: $(ARM_OBJECT_ID)
-      - bash: ls
+      - task: TerraformCLI@0
+          displayName: 'terraform output'
+          inputs:
+              command: output      
       - task: PublishBuildArtifacts@1
         displayName: 'publish terraform files'
         inputs:
           artifactName: aksConfig
           PathtoPublish: ./aks-config/
-
 - ${{ each app in parameters.apps }}:  
   - stage: Deploy_Apps_${{ app.name }}
     displayName: Deploy ${{ app.name }}
@@ -189,6 +191,9 @@ stages:
       pool:
         vmImage: ubuntu-latest
       steps:
+      - bash: |
+          echo $(TF_OUT_IDENTITY_RESOURCE_ID)
+          echo $(TF_OUT_IDENTITY_CLIENT_ID)
       - task: DownloadBuildArtifacts@0
         inputs:
           artifactName: aksConfig
@@ -219,7 +224,6 @@ stages:
           scriptLocation: inlineScript
           inlineScript: |
             kubectl apply -f aksConfig/${{ app.name }}.yaml
-#             -n ${{ app.name }}         
       - task: AzureCLI@1
         displayName: 'check ${{ app.name }} pod'
         inputs:
@@ -227,7 +231,7 @@ stages:
           scriptLocation: inlineScript
           inlineScript: |
             kubectl get po 
-#            -n ${{ app.name }}   
+
 
       # - task: AzureCLI@1
       #   displayName: 'install podidentity'
