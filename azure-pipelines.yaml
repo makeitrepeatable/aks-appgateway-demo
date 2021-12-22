@@ -42,43 +42,43 @@ variables:
   imageName: xlabs-venue-web
   dockerRegistryServiceConnection: makeitrepeatable-acr
 stages:
-- stage: Build
-  displayName: Build
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: ubuntu-latest
-    steps:
-    - checkout: self
-    - ${{ each app in parameters.apps }}:
-      - checkout: ${{ app.name }}
-      - ${{ if eq(app.name, 'backend')}}:
-        - bash: |
-            wget https://packages.microsoft.com/config/ubuntu/21.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-            sudo dpkg -i packages-microsoft-prod.deb
-            rm packages-microsoft-prod.deb
-            sudo apt-get update; \
-            sudo apt-get install -y apt-transport-https && \
-            sudo apt-get update && \
-            sudo apt-get install -y dotnet-sdk-3.1
-          displayName: Install .NET SDK
-        - task: DotNetCoreCLI@2
-          inputs:
-            command: 'build'
-            workingDirectory: ${{ app.repo }}
-      - task: Docker@2
-        displayName: Build ${{ app.name }} image and push to $(acrName)
-        inputs:
-          command: buildAndPush
-          dockerfile: '$(System.DefaultWorkingDirectory)/${{ app.repo }}/Dockerfile'
-          containerRegistry: $(dockerRegistryServiceConnection)
-          repository: ${{ app.name }}
-          tags: |
-            $(Build.BuildId)
+# - stage: Build
+#   displayName: Build
+#   jobs:
+#   - job: Build
+#     displayName: Build
+#     pool:
+#       vmImage: ubuntu-latest
+#     steps:
+#     - checkout: self
+#     - ${{ each app in parameters.apps }}:
+#       - checkout: ${{ app.name }}
+#       - ${{ if eq(app.name, 'backend')}}:
+#         - bash: |
+#             wget https://packages.microsoft.com/config/ubuntu/21.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+#             sudo dpkg -i packages-microsoft-prod.deb
+#             rm packages-microsoft-prod.deb
+#             sudo apt-get update; \
+#             sudo apt-get install -y apt-transport-https && \
+#             sudo apt-get update && \
+#             sudo apt-get install -y dotnet-sdk-3.1
+#           displayName: Install .NET SDK
+#         - task: DotNetCoreCLI@2
+#           inputs:
+#             command: 'build'
+#             workingDirectory: ${{ app.repo }}
+#       - task: Docker@2
+#         displayName: Build ${{ app.name }} image and push to $(acrName)
+#         inputs:
+#           command: buildAndPush
+#           dockerfile: '$(System.DefaultWorkingDirectory)/${{ app.repo }}/Dockerfile'
+#           containerRegistry: $(dockerRegistryServiceConnection)
+#           repository: ${{ app.name }}
+#           tags: |
+#             $(Build.BuildId)
 - stage: Deploy_Infra
   displayName: Deploy Infra
-  dependsOn: Build
+#  dependsOn: Build
   jobs:
   - job: Terraform_Plan
     displayName: Terraform plan
