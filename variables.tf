@@ -36,5 +36,4 @@ variable "location" {
 }
 
 variable "CLIENT_ID" {}
-variable "OBJECT_ID" {}
 variable "CLIENT_SECRET" {}

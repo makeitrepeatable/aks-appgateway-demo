@@ -1,9 +1,3 @@
-#terraform {
-#  backend "azurerm" {
-#    key = "xlabs.tfstate"
-#  }
-#}
-
 locals {
     backend_address_pool_name      = "${var.prefix}-beap"
   frontend_port_name             = "${var.prefix}-feport"
@@ -134,22 +128,20 @@ data "azurerm_container_registry" "acr" {
 resource "azurerm_role_assignment" "attach_acr" {
   scope                = data.azurerm_container_registry.acr.id
   role_definition_name = "AcrPull"
-  principal_id         = var.spn_object_id
+  principal_id         = azurerm_user_assigned_identity.aksmsi.principal_id
 
 }
 
 resource "azurerm_role_assignment" "network" {
     scope                = data.azurerm_subnet.aks.id
     role_definition_name = "Network Contributor"
-    principal_id         = var.spn_object_id 
-
-
+    principal_id         = var.spn_client_id
 }
 
 resource "azurerm_role_assignment" "msi" {
     scope                = azurerm_user_assigned_identity.aksmsi.id
     role_definition_name = "Managed Identity Operator"
-    principal_id         = var.spn_object_id
+    principal_id         = var.spn_client_id
     depends_on           = [azurerm_user_assigned_identity.aksmsi]
 }
 
