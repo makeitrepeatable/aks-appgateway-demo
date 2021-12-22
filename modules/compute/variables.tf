@@ -1,6 +1,5 @@
 variable "prefix" {
     type = string
-    default ="xlabs"
 }
 
 variable "virtual_network_address_prefix" {

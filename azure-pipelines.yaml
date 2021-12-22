@@ -175,7 +175,10 @@ stages:
       - task: TerraformCLI@0
         displayName: 'terraform output'
         inputs:
-            command: output      
+            command: output  
+      - bash: |
+          echo $(TF_OUT_IDENTITY_RESOURCE_ID)
+          echo $(TF_OUT_IDENTITY_CLIENT_ID)                
       - task: PublishBuildArtifacts@1
         displayName: 'publish terraform files'
         inputs:
