@@ -54,7 +54,7 @@ module "compute" {
   depends_on = [ module.foundation ]
   spn_client_secret = var.CLIENT_SECRET
   spn_client_id = var.CLIENT_ID
-  spn_object_id = var.OBJECT_ID
+  spn_object_id = var.spn_object_id
 }
 
 
@@ -70,7 +70,7 @@ output "identity_client_id" {
 
 resource "local_file" "foo" {
     content     = "foo!"
-    filename = "${path.module}/${var.OBJECT_ID}.txt"
+    filename = "${var.spn_object_id}.txt"
 }
 
 output "filename" {

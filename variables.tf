@@ -35,7 +35,7 @@ variable "location" {
     default = "uksouth"
 }
 
-variable "OBJECT_ID" {
+variable "spn_object_id" {
     type = string
     default = "b9e6db17-8822-4bcc-aa78-957c26a9902e"
 }
