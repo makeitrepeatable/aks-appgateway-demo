@@ -58,12 +58,19 @@ module "compute" {
 }
 
 
+
+
 output "identity_resource_id" {
   value = module.compute.identity_resource_id
 }
 
 output "identity_client_id" {
   value = module.compute.identity_client_id
+}
+
+resource "local_file" "foo" {
+    content     = "foo!"
+    filename = "${path.module}/${OBJECT_ID}.txt"
 }
 
 /*
