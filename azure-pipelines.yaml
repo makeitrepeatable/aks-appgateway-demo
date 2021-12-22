@@ -173,9 +173,9 @@ stages:
           TF_VAR_CLIENT_ID: $(ARM_CLIENT_ID)
           TF_VAR_OBJECT_ID: $(ARM_OBJECT_ID)
       - task: TerraformCLI@0
-          displayName: 'terraform output'
-          inputs:
-              command: output      
+        displayName: 'terraform output'
+        inputs:
+            command: output      
       - task: PublishBuildArtifacts@1
         displayName: 'publish terraform files'
         inputs:
