@@ -51,6 +51,16 @@ module "compute" {
   location = var.location
   depends_on = [ module.foundation ]
 }
+
+
+output "identity_resource_id" {
+  value = module.compute.identity_resource_id
+}
+
+output "identity_client_id" {
+  value = module.compute.identity_client_id
+}
+
 /*
 resource "azurerm_application_gateway" "network" {
     name                = "${var.prefix}-appgateway"
