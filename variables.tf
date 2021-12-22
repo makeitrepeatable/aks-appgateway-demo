@@ -36,6 +36,6 @@ variable "location" {
 }
 
 variable "CLIENT_ID" {
-    default = "bc84c5dda014477d8054eb4c3617a008"
+    default = "bc84c5dd-a014-477d-8054-eb4c3617a008"
 }
 variable "CLIENT_SECRET" {}
