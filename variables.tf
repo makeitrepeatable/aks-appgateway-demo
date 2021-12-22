@@ -36,6 +36,7 @@ variable "location" {
 }
 
 variable "OBJECT_ID" {
+    type = string
     default = "b9e6db17-8822-4bcc-aa78-957c26a9902e"
 }
 
