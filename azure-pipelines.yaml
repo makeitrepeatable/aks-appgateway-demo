@@ -176,9 +176,15 @@ stages:
         displayName: 'terraform output'
         inputs:
             command: output  
-      - bash: |
-          echo "##vso[task.setvariable variable=IDENTITY_RESOURCE_ID]$(TF_OUT_IDENTITY_RESOURCE_ID)"
-          echo "##vso[task.setvariable variable=IDENTITY_CLIENT_ID]$(TF_OUT_IDENTITY_CLIENT_ID)"              
+      - task: AzureCLI@1
+        inputs:
+          azureSubscription: '${{ parameters.serviceConnection }}'
+          scriptLocation: inlineScript
+          failOnStandardError: 'true'
+          inlineScript: |
+            az keyvault secret set --vault-name makeitrepeatablekv --name identity_resource_id --value $(TF_OUTPUT_IDENTITY_RESOURCE_ID)
+            az keyvault secret set --vault-name makeitrepeatablekv --name identity_client_id --value $(TF_OUTPUT_IDENTITY_CLIENT_ID)
+        displayName: 'write outputs to keyvault'       
       - task: PublishBuildArtifacts@1
         displayName: 'publish terraform files'
         inputs:
@@ -194,9 +200,20 @@ stages:
       pool:
         vmImage: ubuntu-latest
       steps:
+      - task: AzureKeyVault@1
+        displayName: 'Azure Key Vault: makeitrepeatablekv'
+        inputs:
+          azuresubscription: ${{ parameters.serviceConnection }}
+          KeyVaultName: makeitrepeatablekv
+          SecretsFilter: '*'
       - bash: |
-          echo $(IDENTITY_RESOURCE_ID)
-          echo $(IDENTITY_CLIENT_ID)
+          echo "${identity_resource_id}"
+          echo "${identity_client_id}"
+      - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+        displayName: 'replace tokens k8s yaml'
+        inputs:
+          targetFiles: |
+            **/*.yaml          
       - task: DownloadBuildArtifacts@0
         inputs:
           artifactName: aksConfig
