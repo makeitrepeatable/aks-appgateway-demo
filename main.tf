@@ -68,14 +68,6 @@ output "identity_client_id" {
   value = module.compute.identity_client_id
 }
 
-resource "local_file" "foo" {
-    content     = "foo!"
-    filename = "${var.spn_object_id}.txt"
-}
-
-output "filename" {
-  value = local_file.foo.filename
-}
 
 /*
 resource "azurerm_application_gateway" "network" {

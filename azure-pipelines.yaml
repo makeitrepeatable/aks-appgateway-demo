@@ -27,9 +27,9 @@ parameters:
   default: tf-states
 - name: stateFileName
   type: string
-  default: xlabs.tfstate  
+  default: terraform.tfstate  
 - name: prefix
-  default: xlabs
+  default: makeitrepeatable
 - name: apps
   type: object
   default:
@@ -42,43 +42,43 @@ variables:
   imageName: xlabs-venue-web
   dockerRegistryServiceConnection: makeitrepeatable-acr
 stages:
-# - stage: Build
-#   displayName: Build
-#   jobs:
-#   - job: Build
-#     displayName: Build
-#     pool:
-#       vmImage: ubuntu-latest
-#     steps:
-#     - checkout: self
-#     - ${{ each app in parameters.apps }}:
-#       - checkout: ${{ app.name }}
-#       - ${{ if eq(app.name, 'backend')}}:
-#         - bash: |
-#             wget https://packages.microsoft.com/config/ubuntu/21.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-#             sudo dpkg -i packages-microsoft-prod.deb
-#             rm packages-microsoft-prod.deb
-#             sudo apt-get update; \
-#             sudo apt-get install -y apt-transport-https && \
-#             sudo apt-get update && \
-#             sudo apt-get install -y dotnet-sdk-3.1
-#           displayName: Install .NET SDK
-#         - task: DotNetCoreCLI@2
-#           inputs:
-#             command: 'build'
-#             workingDirectory: ${{ app.repo }}
-#       - task: Docker@2
-#         displayName: Build ${{ app.name }} image and push to $(acrName)
-#         inputs:
-#           command: buildAndPush
-#           dockerfile: '$(System.DefaultWorkingDirectory)/${{ app.repo }}/Dockerfile'
-#           containerRegistry: $(dockerRegistryServiceConnection)
-#           repository: ${{ app.name }}
-#           tags: |
-#             $(Build.BuildId)
+- stage: Build
+  displayName: Build
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: ubuntu-latest
+    steps:
+    - checkout: self
+    - ${{ each app in parameters.apps }}:
+      - checkout: ${{ app.name }}
+      - ${{ if eq(app.name, 'backend')}}:
+        - bash: |
+            wget https://packages.microsoft.com/config/ubuntu/21.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+            sudo dpkg -i packages-microsoft-prod.deb
+            rm packages-microsoft-prod.deb
+            sudo apt-get update; \
+            sudo apt-get install -y apt-transport-https && \
+            sudo apt-get update && \
+            sudo apt-get install -y dotnet-sdk-3.1
+          displayName: Install .NET SDK
+        - task: DotNetCoreCLI@2
+          inputs:
+            command: 'build'
+            workingDirectory: ${{ app.repo }}
+      - task: Docker@2
+        displayName: Build ${{ app.name }} image and push to $(acrName)
+        inputs:
+          command: buildAndPush
+          dockerfile: '$(System.DefaultWorkingDirectory)/${{ app.repo }}/Dockerfile'
+          containerRegistry: $(dockerRegistryServiceConnection)
+          repository: ${{ app.name }}
+          tags: |
+            $(Build.BuildId)
 - stage: Deploy_Infra
   displayName: Deploy Infra
-#  dependsOn: Build
+  dependsOn: Build
   jobs:
   - job: Terraform_Plan
     displayName: Terraform plan
@@ -145,7 +145,7 @@ stages:
           scriptLocation: inlineScript
           scriptType: bash
           inlineScript: |
-              terraform plan -var 'prefix=xlabs' -input=false -out plan.out > tf.plan
+              terraform plan -input=false -out plan.out > tf.plan
         env:
           ARM_SUBSCRIPTION_ID: $(ARM_SUBSCRIPTION_ID)
           ARM_CLIENT_ID: $(ARM_CLIENT_ID)
@@ -238,7 +238,7 @@ stages:
           azureSubscription: ${{ parameters.serviceConnection }}
           scriptLocation: inlineScript
           inlineScript: |
-            kubectl create -f https://raw.githubusercontent.com/Azure/aad-pod-identity/master/deploy/infra/deployment.yaml
+            kubectl apply -f https://raw.githubusercontent.com/Azure/aad-pod-identity/master/deploy/infra/deployment.yaml
       - task: AzureCLI@1
         displayName: 'helm install'
         inputs:
