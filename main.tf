@@ -47,6 +47,7 @@ module "foundation" {
 
 module "compute" {
   source = ".//modules/compute"
+  prefix = var.prefix
   resource_group_name = module.foundation.resource_group_name
   public_ip_address = module.foundation.public_ip_address_id
   virtual_network_name = module.foundation.virtual_network_name
