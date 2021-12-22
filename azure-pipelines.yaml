@@ -116,9 +116,9 @@ stages:
             echo "##vso[task.setvariable variable=ARM_CLIENT_ID]${servicePrincipalId}"
             echo "##vso[task.setvariable variable=ARM_CLIENT_SECRET]${servicePrincipalKey}"
             echo "##vso[task.setvariable variable=ARM_TENANT_ID]$(az account show --query="tenantId" -o tsv)"
-            echo "##vso[task.setvariable variable=ARM_OBJECT_ID]${servicePrincipalObjectId}"
+            echo "##vso[task.setvariable variable=TEST]${servicePrincipalObjectId}"
       - bash: |
-          echo 'object id: $(ARM_OBJECT_ID)'
+          echo 'object id: $(TEST)'
           echo "${servicePrincipalId}"
           echo "$(ARM_CLIENT_ID)"
       - task: AzureCLI@2
