@@ -8,8 +8,8 @@ verbosityLevel: 3
 #
 appgw:
     subscriptionId: 9ca89063-810e-4507-ac91-86c149d26bea
-    resourceGroup: xlabs-aks-rg
-    name: xlabs-appgateway
+    resourceGroup: makeitrepeatable-aks-rg
+    name: makeitrepeatable-appgateway
     usePrivateIP: false
 
     # Setting appgw.shared to "true" will create an AzureIngressProhibitedTarget CRD.
@@ -33,8 +33,8 @@ appgw:
 # - Option 1: AAD-Pod-Identity (https://github.com/Azure/aad-pod-identity)
 armAuth:
     type: aadPodIdentity
-    identityResourceID: #{identity_resource_id}#
-    identityClientID:  #{identity_client_id}#
+    identityResourceID: #{identity-resource-id}#
+    identityClientID:  #{identity-client-id}#
     
 
 

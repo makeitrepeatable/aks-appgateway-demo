@@ -131,7 +131,7 @@ resource "azurerm_role_assignment" "attach_acr" {
   principal_id         = azurerm_user_assigned_identity.aksmsi.principal_id
 
 }
-/*
+
 resource "azurerm_role_assignment" "network" {
     scope                = data.azurerm_subnet.aks.id
     role_definition_name = "Network Contributor"
@@ -144,7 +144,7 @@ resource "azurerm_role_assignment" "msi" {
     principal_id         = var.spn_object_id
     depends_on           = [azurerm_user_assigned_identity.aksmsi]
 }
-*/
+
 resource "azurerm_role_assignment" "contributor" {
     scope                = azurerm_application_gateway.network.id
     role_definition_name = "Contributor"

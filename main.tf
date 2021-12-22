@@ -60,6 +60,15 @@ module "compute" {
 
 
 
+output "resource_group_name" {
+  value = module.foundation.resource_group_name
+}
+
+
+output "aks_cluster_name" {
+  value = module.compute.aksName
+}
+
 
 output "identity_resource_id" {
   value = module.compute.identity_resource_id
