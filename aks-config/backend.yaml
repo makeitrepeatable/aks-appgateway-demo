@@ -1,12 +1,12 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: xlabs-venue-api
+  name: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: xlabs-venue-api
+      app: backend
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -15,12 +15,12 @@ spec:
   template:
     metadata:
       labels:
-        app: xlabs-venue-api
+        app: backend
     spec:
       nodeSelector:
         "beta.kubernetes.io/os": linux
       containers:
-      - name: xlabs-venue-api
+      - name: backend
         image: #{containerRegistry}#.azurecr.io/backend:#{Build.BuildId}#
         ports:
         - containerPort: 3000

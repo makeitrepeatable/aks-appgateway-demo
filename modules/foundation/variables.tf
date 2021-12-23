@@ -1,6 +1,5 @@
 variable "prefix" {
     type = string
-    default ="xlabs"
 }
 
 variable "virtual_network_address_prefix" {
@@ -10,4 +9,5 @@ variable "virtual_network_address_prefix" {
 
 variable "location" {
     type = string
+    default = "uksouth"
 }

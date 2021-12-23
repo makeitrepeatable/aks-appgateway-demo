@@ -1,8 +1,3 @@
-#terraform {
-#  backend "azurerm" {
-#    key = "xlabs.tfstate"
-#  }
-#}
 
 variable "subnets" {
   type = map
@@ -18,7 +13,7 @@ variable "subnets" {
   }
 }
 
-resource "azurerm_resource_group" "xlabs" {
+resource "azurerm_resource_group" "aks" {
   name     = "${var.prefix}-aks-rg"
   location = "uksouth"
 }
@@ -26,8 +21,8 @@ resource "azurerm_resource_group" "xlabs" {
 # begin appgw creation
 resource "azurerm_virtual_network" "aks_vnet" {
     name                = "${var.prefix}-vnet"
-    location            = azurerm_resource_group.xlabs.location
-    resource_group_name = azurerm_resource_group.xlabs.name
+    location            = azurerm_resource_group.aks.location
+    resource_group_name = azurerm_resource_group.aks.name
     address_space       = [var.virtual_network_address_prefix]
 
   tags = {
@@ -40,7 +35,7 @@ resource "azurerm_subnet" "subnets" {
   name = each.value.name
   address_prefix = each.value.address_prefix
   virtual_network_name = azurerm_virtual_network.aks_vnet.name
-  resource_group_name = azurerm_resource_group.xlabs.name
+  resource_group_name = azurerm_resource_group.aks.name
   depends_on = [azurerm_virtual_network.aks_vnet]
 }
 
@@ -48,8 +43,8 @@ resource "azurerm_subnet" "subnets" {
 # Public Ip 
 resource "azurerm_public_ip" "pip" {
     name                         = "${var.prefix}-publicip"
-    location                     = azurerm_resource_group.xlabs.location
-    resource_group_name          = azurerm_resource_group.xlabs.name
+    location                     = azurerm_resource_group.aks.location
+    resource_group_name          = azurerm_resource_group.aks.name
     allocation_method            = "Static"
     sku                          = "Standard"
 
@@ -61,7 +56,7 @@ resource "azurerm_public_ip" "pip" {
 }
 
 output "resource_group_name" {
-  value = azurerm_resource_group.xlabs.name
+  value = azurerm_resource_group.aks.name
 }
 
 output "virtual_network_id" {
