@@ -88,6 +88,9 @@ stages:
     displayName: Terraform plan
     pool:
       vmImage: ubuntu-latest
+    variables:
+    - name: containerRegistry
+      value: ${{ parameters.containerRegistry }}
     steps:  
       - checkout: self  
       - task: charleszipp.azure-pipelines-tasks-terraform.azure-pipelines-tasks-terraform-installer.TerraformInstaller@0
@@ -104,7 +107,7 @@ stages:
         displayName: 'replace tokens k8s yaml'
         inputs:
           targetFiles: |
-            **/*.yaml
+            aks-config/**.yaml
           verbosity: on      
       - bash: |
           cat aks-config/frontend.yaml    
@@ -202,9 +205,6 @@ stages:
   - stage: Deploy_Apps_${{ app.name }}
     displayName: Deploy ${{ app.name }}
     dependsOn: deploy_infra
-    variables:
-    - name: containerRegistry
-      value: ${{ parameters.containerRegistry }}
     jobs:
     - job: Deploy
       displayName: Deploy
@@ -227,11 +227,9 @@ stages:
         displayName: 'replace tokens k8s yaml'
         inputs:
           targetFiles: |
-            **/*.yaml    
+            helm-config/helm-config.yaml    
       - bash: |
-          cat helm-config/helm-config.yaml
-      - bash: |
-          cat aks-config/frontend.yaml      
+          cat helm-config/helm-config.yaml   
       - bash: |
           cat aksConfig/frontend.yaml                            
       - task: AzureCLI@1
