@@ -216,20 +216,20 @@ stages:
         inputs:
           azuresubscription: ${{ parameters.serviceConnection }}
           KeyVaultName: ${{ parameters.keyVault }}
-          SecretsFilter: '*'
-      - bash: |
-          echo "$(msi-resource-id)"
-          echo "$(msi-client-id)"
-          echo "$(containerRegistry)"
-      - task: qetza.replacetokens.replacetokens-task.replacetokens@3
-        displayName: 'replace tokens k8s yaml'
-        inputs:
-          targetFiles: |
-            **/*.yaml          
+          SecretsFilter: '*'      
       - task: DownloadBuildArtifacts@0
         inputs:
           artifactName: aksConfig
           downloadPath: ./
+      - task: qetza.replacetokens.replacetokens-task.replacetokens@3
+        displayName: 'replace tokens k8s yaml'
+        inputs:
+          targetFiles: |
+            **/*.yaml    
+      - bash: |
+          cat helm-config/helm-config.yaml
+      - bash: |
+          cat aks-config/backend.yaml                    
       - task: AzureCLI@1
         displayName: 'set kubectl context'
         inputs:
