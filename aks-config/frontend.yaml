@@ -6,7 +6,7 @@ metadata:
     app: xlabs-venue-web
 spec:
   containers:
-  - image: makeitrepeatable.azurecr.io/frontend:#{Build.BuildId}#
+  - image: #{containerRegistry}#.azurecr.io/frontend:#{Build.BuildId}#
     name: aspnetapp-image
     ports:
     - containerPort: 80
