@@ -29,6 +29,7 @@ In Azure DevOps you'll need:
 The infra for the stack is written in Terraform. Because of some interesting dependancies as a result of my use of `for_each` to create the subnets, i've split this into modules (something which i'd usually consider overkill for a project of this size.).
 
 **Root module**
+<br />
 The child modules contain the code that will create the resources, but it is the root module which references these and passed them the required values:
 
 ```
@@ -40,6 +41,7 @@ module "foundation" {
 ```
 
 **Foundation module**
+<br />
 The foundation module creates the basic resources on which the app infrasturcture is deployed:
 * Resource group
 * Virtual network
@@ -47,6 +49,7 @@ The foundation module creates the basic resources on which the app infrasturctur
 * App Gateway Public IP
 
 **Compute module**
+<br />
 The compute module creates the infra that the applications will be deployed to:
 * AKS cluster
 * App gateway
@@ -57,11 +60,13 @@ The compute module creates the infra that the applications will be deployed to:
 ## Deployment
 
 **Running locally**
+<br />
 You can clone this repo and run the Terraform locally by configuring the backend to use either remote or local state and running `terraform init/plan/apply` from the root directory.
 
 This will spin up the infrastructure and you can run the `kubectl` commands from the pipeline manually to create a deployment and the necessary ingress to leverage the Application Gateway
 
 **Pipeline**
+<br />
 The pipeline is split into three stages: Build > infra deploy > app deploy. In the real world, the infra would be a consequence of the application and would be closely coupled (you build it, you run it and all that), but I had limited time and no desire to create three pipelines.
 
 Build:
