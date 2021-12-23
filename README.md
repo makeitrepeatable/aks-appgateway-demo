@@ -89,4 +89,4 @@ A basic Terratest has been created that deploys the foundation module and valida
 * Hook up AKS to Log Analytics
 * DNS & SSL
 * Add PR trigger to run tests when a new PR is created
-* Load of other stuff...
+* Remove obsolete variables
