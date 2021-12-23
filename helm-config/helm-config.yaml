@@ -8,8 +8,8 @@ verbosityLevel: 3
 #
 appgw:
     subscriptionId: 9ca89063-810e-4507-ac91-86c149d26bea
-    resourceGroup: makeitrepeatable-aks-rg
-    name: makeitrepeatable-appgateway
+    resourceGroup: #{aks-resource-group}#
+    name: #{aks-app-gateway}#
     usePrivateIP: false
 
     # Setting appgw.shared to "true" will create an AzureIngressProhibitedTarget CRD.

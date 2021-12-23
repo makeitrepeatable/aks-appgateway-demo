@@ -64,6 +64,10 @@ output "resource_group_name" {
   value = module.foundation.resource_group_name
 }
 
+output "app_gateway_name" {
+  value = module.compute.app_gateway_name
+}
+
 
 output "aks_cluster_name" {
   value = module.compute.aksName

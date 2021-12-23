@@ -184,6 +184,8 @@ stages:
           inlineScript: |
             az keyvault secret set --vault-name makeitrepeatablekv --name identity-resource-id --value "$(TF_OUT_IDENTITY_RESOURCE_ID)"
             az keyvault secret set --vault-name makeitrepeatablekv --name identity-client-id --value "$(TF_OUT_IDENTITY_CLIENT_ID)"
+            az keyvault secret set --vault-name makeitrepeatablekv --name aks-resource-group --value "$(TF_OUT_RESOURCE_GROUP_NAME)"
+            az keyvault secret set --vault-name makeitrepeatablekv --name aks-app-gateway --value "$(TF_OUT_APP_GATEWAY_NAME)"
         displayName: 'write outputs to keyvault'       
       - task: PublishBuildArtifacts@1
         displayName: 'publish terraform files'
