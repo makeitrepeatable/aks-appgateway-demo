@@ -7,7 +7,7 @@ verbosityLevel: 3
 # Specify which application gateway the ingress controller will manage
 #
 appgw:
-    subscriptionId: 9ca89063-810e-4507-ac91-86c149d26bea
+    subscriptionId: #{subscription-id}#
     resourceGroup: #{aks-resource-group}#
     name: #{aks-app-gateway}#
     usePrivateIP: false
