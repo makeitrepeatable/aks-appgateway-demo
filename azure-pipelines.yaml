@@ -264,6 +264,13 @@ stages:
           inlineScript: |
             kubectl get po 
       - ${{ if eq(app.name, 'backend')}}:
+        - task: PublishBuildArtifacts@1
+          displayName: 'publish helm config'
+          inputs:
+            artifactName: helm
+            PathtoPublish: |
+              ./aks-config/   
+              ./helm-config/   
         - task: AzureCLI@1
           displayName: 'install podidentity'
           inputs:
