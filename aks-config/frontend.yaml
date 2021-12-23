@@ -7,7 +7,7 @@ metadata:
 spec:
   containers:
   - image: #{containerRegistry}#.azurecr.io/frontend:#{Build.BuildId}#
-    name: aspnetapp-image
+    name: xlabs-venue-web
     ports:
     - containerPort: 80
       protocol: TCP
