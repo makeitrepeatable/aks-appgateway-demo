@@ -39,7 +39,7 @@ parameters:
   #   repo: xlabs-venue-api
 - name: containerRegistry
   type: string
-  default: makeitrepeatableacr
+  default: makeitrepeatable
 - name: keyVault
   type: string
   default: makeitrepeatablekv
