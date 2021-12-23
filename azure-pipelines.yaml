@@ -35,8 +35,8 @@ parameters:
   default:
   - name: frontend
     repo: xlabs-venue-web
-  # - name: backend
-  #   repo: xlabs-venue-api
+  - name: backend
+    repo: xlabs-venue-api
 - name: containerRegistry
   type: string
   default: makeitrepeatable
@@ -109,8 +109,6 @@ stages:
           targetFiles: |
             aks-config/**.yaml
           verbosity: on      
-      - bash: |
-          cat aks-config/frontend.yaml    
       - task: AzureCLI@1
         displayName: 'setup az authentication: ${{ parameters.serviceConnection }}'
         inputs:
@@ -220,18 +218,12 @@ stages:
       - task: DownloadBuildArtifacts@0
         inputs:
           artifactName: aksConfig
-          downloadPath: ./
-      - bash: |
-          cat aksConfig/frontend.yaml    
+          downloadPath: ./  
       - task: qetza.replacetokens.replacetokens-task.replacetokens@3
         displayName: 'replace tokens k8s yaml'
         inputs:
           targetFiles: |
-            helm-config/helm-config.yaml    
-      - bash: |
-          cat helm-config/helm-config.yaml   
-      - bash: |
-          cat aksConfig/frontend.yaml                            
+            helm-config/helm-config.yaml                         
       - task: AzureCLI@1
         displayName: 'set kubectl context'
         inputs:
