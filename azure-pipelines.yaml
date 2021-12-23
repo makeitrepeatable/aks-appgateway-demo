@@ -229,7 +229,9 @@ stages:
       - bash: |
           cat helm-config/helm-config.yaml
       - bash: |
-          cat aks-config/frontend.yaml                    
+          cat aks-config/frontend.yaml      
+      - bash: |
+          cat aksConfig/frontend.yaml                            
       - task: AzureCLI@1
         displayName: 'set kubectl context'
         inputs:
