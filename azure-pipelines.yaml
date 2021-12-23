@@ -263,32 +263,32 @@ stages:
           scriptLocation: inlineScript
           inlineScript: |
             kubectl get po 
-      - ${{ if eq(app.name, 'frontend')}}:
-        - task: PublishBuildArtifacts@1
-          displayName: 'publish helm config'
-          inputs:
-            artifactName: helm
-            PathtoPublish: |
-              ./helm-config/   
-        - task: AzureCLI@1
-          displayName: 'install podidentity'
-          inputs:
-            azureSubscription: ${{ parameters.serviceConnection }}
-            scriptLocation: inlineScript
-            inlineScript: |
-              kubectl apply -f https://raw.githubusercontent.com/Azure/aad-pod-identity/master/deploy/infra/deployment.yaml
-        - task: AzureCLI@1
-          displayName: 'helm install'
-          inputs:
-            azureSubscription: ${{ parameters.serviceConnection }}
-            scriptLocation: inlineScript
-            inlineScript: |
-              helm repo add application-gateway-kubernetes-ingress https://appgwingress.blob.core.windows.net/ingress-azure-helm-package/
-              helm repo update
-        - task: AzureCLI@1
-          displayName: 'install ingress control chart'
-          inputs:
-            azureSubscription: ${{ parameters.serviceConnection }}
-            scriptLocation: inlineScript
-            inlineScript: |
-              helm install -f helm-config/helm-config.yaml application-gateway-kubernetes-ingress/ingress-azure --generate-name            
+      # - ${{ if eq(app.name, 'frontend')}}:
+      #   - task: PublishBuildArtifacts@1
+      #     displayName: 'publish helm config'
+      #     inputs:
+      #       artifactName: helm
+      #       PathtoPublish: |
+      #         ./helm-config/   
+      #   - task: AzureCLI@1
+      #     displayName: 'install podidentity'
+      #     inputs:
+      #       azureSubscription: ${{ parameters.serviceConnection }}
+      #       scriptLocation: inlineScript
+      #       inlineScript: |
+      #         kubectl apply -f https://raw.githubusercontent.com/Azure/aad-pod-identity/master/deploy/infra/deployment.yaml
+      #   - task: AzureCLI@1
+      #     displayName: 'helm install'
+      #     inputs:
+      #       azureSubscription: ${{ parameters.serviceConnection }}
+      #       scriptLocation: inlineScript
+      #       inlineScript: |
+      #         helm repo add application-gateway-kubernetes-ingress https://appgwingress.blob.core.windows.net/ingress-azure-helm-package/
+      #         helm repo update
+      #   - task: AzureCLI@1
+      #     displayName: 'install ingress control chart'
+      #     inputs:
+      #       azureSubscription: ${{ parameters.serviceConnection }}
+      #       scriptLocation: inlineScript
+      #       inlineScript: |
+      #         helm install -f helm-config/helm-config.yaml application-gateway-kubernetes-ingress/ingress-azure --generate-name            
