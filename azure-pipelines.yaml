@@ -269,7 +269,7 @@ stages:
           inputs:
             artifactName: helm
             PathtoPublish: |
-              ./aks-config/   
+#              ./aks-config/   
               ./helm-config/   
         - task: AzureCLI@1
           displayName: 'install podidentity'
