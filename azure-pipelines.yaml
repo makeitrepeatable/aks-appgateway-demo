@@ -218,8 +218,8 @@ stages:
           KeyVaultName: ${{ parameters.keyVault }}
           SecretsFilter: '*'
       - bash: |
-          echo "${msi-resource-id}"
-          echo "${msi-client-id}"
+          echo "$(msi-resource-id)"
+          echo "$(msi-client-id)"
           echo "$(containerRegistry)"
       - task: qetza.replacetokens.replacetokens-task.replacetokens@3
         displayName: 'replace tokens k8s yaml'
