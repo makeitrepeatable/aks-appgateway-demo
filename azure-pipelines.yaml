@@ -35,8 +35,8 @@ parameters:
   default:
   - name: frontend
     repo: xlabs-venue-web
-  - name: backend
-    repo: xlabs-venue-api
+  # - name: backend
+  #   repo: xlabs-venue-api
 - name: containerRegistry
   type: string
   default: makeitrepeatableacr
