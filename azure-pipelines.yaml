@@ -188,8 +188,8 @@ stages:
           inlineScript: |
             export subscriptionId=$(az account show --query="id" -o tsv)
             az keyvault secret set --vault-name ${{ parameters.keyVault }} --name subscription-id --value "$subscriptionId"
-            az keyvault secret set --vault-name ${{ parameters.keyVault }} --name identity-resource-id --value "$(TF_OUT_IDENTITY_RESOURCE_ID)"
-            az keyvault secret set --vault-name ${{ parameters.keyVault }} --name identity-client-id --value "$(TF_OUT_IDENTITY_CLIENT_ID)"
+            az keyvault secret set --vault-name ${{ parameters.keyVault }} --name msi-resource-id --value "$(TF_OUT_IDENTITY_RESOURCE_ID)"
+            az keyvault secret set --vault-name ${{ parameters.keyVault }} --name msi-client-id --value "$(TF_OUT_IDENTITY_CLIENT_ID)"
             az keyvault secret set --vault-name ${{ parameters.keyVault }} --name aks-resource-group --value "$(TF_OUT_RESOURCE_GROUP_NAME)"
             az keyvault secret set --vault-name ${{ parameters.keyVault }} --name aks-app-gateway --value "$(TF_OUT_APP_GATEWAY_NAME)"
         displayName: 'write outputs to keyvault'       
@@ -218,8 +218,8 @@ stages:
           KeyVaultName: ${{ parameters.keyVault }}
           SecretsFilter: '*'
       - bash: |
-          echo "${identity-resource-id}"
-          echo "${identity-client-id}"
+          echo "${msi-resource-id}"
+          echo "${msi-client-id}"
           echo "$(containerRegistry)"
       - task: qetza.replacetokens.replacetokens-task.replacetokens@3
         displayName: 'replace tokens k8s yaml'
