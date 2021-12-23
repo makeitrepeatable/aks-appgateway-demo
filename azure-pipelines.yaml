@@ -39,10 +39,12 @@ parameters:
     repo: xlabs-venue-api
 - name: containerRegistry
   type: string
+  default: makeitrepeatableacr
 - name: keyVault
   type: string
+  default: makeitrepeatablekv
 variables:
-  dockerRegistryServiceConnection: '${{ parameters.containterRegistry }}-acr'
+  dockerRegistryServiceConnection: '${{ parameters.containerRegistry }}-acr'
 stages:
 - stage: Build
   displayName: Build
