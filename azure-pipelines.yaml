@@ -204,7 +204,7 @@ stages:
     dependsOn: deploy_infra
     variables:
     - name: containerRegistry
-      value: ${{ parameters.containterRegistry }}
+      value: ${{ parameters.containerRegistry }}
     jobs:
     - job: Deploy
       displayName: Deploy
