@@ -221,6 +221,8 @@ stages:
         inputs:
           artifactName: aksConfig
           downloadPath: ./
+      - bash: |
+          cat aksConfig/frontend.yaml    
       - task: qetza.replacetokens.replacetokens-task.replacetokens@3
         displayName: 'replace tokens k8s yaml'
         inputs:
