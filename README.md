@@ -15,6 +15,7 @@ In the Azure subscription you'll need to deploy the following before you can run
 * ACR
 * KeyVault (plus App Config if you don't like storing non-secrets in KeyVault)
 * A service Principal/App registration (client ID & client secret in KV)
+* A storage account to manage remote Terraform state
 ** This will need owner opermissions in order to create & manage Managed Identities
 
 In Azure DevOps you'll need:
