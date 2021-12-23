@@ -263,7 +263,7 @@ stages:
           scriptLocation: inlineScript
           inlineScript: |
             kubectl get po 
-      - ${{ if eq(app.name, 'backend')}}:
+      - ${{ if eq(app.name, 'frontend')}}:
         - task: PublishBuildArtifacts@1
           displayName: 'publish helm config'
           inputs:
