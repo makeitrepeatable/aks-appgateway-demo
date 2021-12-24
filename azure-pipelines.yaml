@@ -15,13 +15,10 @@ resources:
 parameters:
 - name: serviceConnection
   type: string
-  default: makeitrepeatable
 - name: stateStorageAccount
   type: string
-  default: makeitrepeatabletfstates
 - name: stateResourceGroup
   type: string
-  default: makeitrepeatable-storage
 - name: stateStorageContainer
   type: string
   default: tf-states
@@ -39,10 +36,8 @@ parameters:
     repo: xlabs-venue-api
 - name: containerRegistry
   type: string
-  default: makeitrepeatable
 - name: keyVault
   type: string
-  default: makeitrepeatablekv
 variables:
   dockerRegistryServiceConnection: '${{ parameters.prefix }}-acr'
 stages:
